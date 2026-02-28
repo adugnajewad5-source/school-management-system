@@ -42,55 +42,163 @@ Click "Advanced" → "Add Environment Variable"
 Add these variables:
 
 ```
-DB_HOST=your-mysql-host
-DB_USER=your-mysql-username
-DB_PASSWORD=your-mysql-password
+# Database Configuration (Use your production database)
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=
 DB_NAME=school_management
 DB_PORT=3306
 
-JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
+# JWT Secret (IMPORTANT: Generate a strong secret!)
+JWT_SECRET=your-super-secret-jwt-key-change-this-in-production-use-32-plus-characters
 
+# Cloudinary Configuration (Get from https://cloudinary.com/console)
 CLOUDINARY_CLOUD_NAME=your-cloudinary-cloud-name
 CLOUDINARY_API_KEY=your-cloudinary-api-key
 CLOUDINARY_API_SECRET=your-cloudinary-api-secret
 
+# Server Configuration
 PORT=10000
 NODE_ENV=production
+
+# Frontend URL (Update after Vercel deployment)
+FRONTEND_URL=https://your-app.vercel.app
 ```
 
-**Important:**
-- Replace all `your-*` values with actual credentials
-- JWT_SECRET: Use a long random string (at least 32 characters)
-- Get Cloudinary credentials from: https://cloudinary.com/console
+**Important Notes:**
 
-### Step 5: Create MySQL Database on Render
+**For Database:**
+- **Local Development**: Use `localhost`, `root`, and empty password
+- **Production**: Use cloud database credentials (see Step 5 below)
+- If using PlanetScale/Railway/Aiven, replace with their connection details
 
-1. Click "New +" → "PostgreSQL" or use external MySQL
-2. For MySQL, use external service like:
-   - **PlanetScale** (recommended, free tier): https://planetscale.com
-   - **Railway**: https://railway.app
-   - **Aiven**: https://aiven.io
+**For JWT_SECRET:**
+- Generate a strong random string (32+ characters)
+- Example: `school_mgmt_2026_super_secret_jwt_key_production_xyz123`
+- Never use the default value in production!
 
-**Using PlanetScale (Recommended):**
+**For Cloudinary:**
+- Sign up at: https://cloudinary.com
+- Go to Dashboard → Copy credentials
+- Cloud Name, API Key, and API Secret
+
+**For FRONTEND_URL:**
+- Leave as placeholder initially
+- Update after deploying frontend on Vercel (Step 2)
+
+### Step 5: Set Up Production Database
+
+You have several options for production database:
+
+#### Option 1: PlanetScale (Recommended - Free Tier Available)
+
+**Why PlanetScale?**
+- Free tier available
+- Serverless MySQL
+- No connection limits
+- Automatic backups
+- Easy to use
+
+**Setup Steps:**
 1. Go to: https://planetscale.com
 2. Sign up with GitHub
-3. Create new database: `school-management`
-4. Click "Connect" → "Node.js"
-5. Copy connection details
-6. Update Render environment variables with these details
+3. Click "Create database"
+4. Name: `school-management`
+5. Region: Choose closest to your users
+6. Click "Create database"
 
-### Step 6: Deploy
-1. Click "Create Web Service"
-2. Wait for deployment (5-10 minutes)
-3. Your backend will be live at: `https://school-management-backend.onrender.com`
-
-### Step 7: Initialize Database
-1. Connect to your MySQL database
-2. Run the schema:
-   ```bash
-   mysql -h your-host -u your-user -p your-database < database/schema.sql
+**Get Connection Details:**
+1. Click "Connect" button
+2. Select "Node.js" from dropdown
+3. Copy the connection details:
    ```
-3. Or use a MySQL client (MySQL Workbench, DBeaver, etc.)
+   DB_HOST=aws.connect.psdb.cloud
+   DB_USER=xxxxxxxxxx
+   DB_PASSWORD=pscale_pw_xxxxxxxxxx
+   DB_NAME=school-management
+   DB_PORT=3306
+   ```
+4. Update these in Render environment variables
+
+**Import Schema:**
+1. Click "Console" tab in PlanetScale
+2. Copy contents of `database/schema.sql`
+3. Paste and execute in console
+4. Or use PlanetScale CLI to import
+
+#### Option 2: Railway (Easy Setup)
+
+**Setup Steps:**
+1. Go to: https://railway.app
+2. Sign up with GitHub
+3. Click "New Project" → "Provision MySQL"
+4. Copy connection details from "Connect" tab
+5. Update Render environment variables
+
+**Connection Details:**
+```
+DB_HOST=containers-us-west-xxx.railway.app
+DB_USER=root
+DB_PASSWORD=xxxxxxxxxx
+DB_NAME=railway
+DB_PORT=xxxx
+```
+
+#### Option 3: Aiven (Free Tier Available)
+
+**Setup Steps:**
+1. Go to: https://aiven.io
+2. Sign up (free tier available)
+3. Create MySQL service
+4. Wait for service to start
+5. Copy connection details
+6. Update Render environment variables
+
+#### Option 4: Use Your Local Database (Not Recommended for Production)
+
+If you want to use your local MySQL database temporarily:
+
+**Requirements:**
+- Your computer must be always on
+- MySQL must be accessible from internet
+- Need to configure port forwarding
+- Not secure or reliable for production
+
+**Better Alternative:** Use one of the cloud options above
+
+### Step 6: Update Render Environment Variables
+
+After setting up your database, update these in Render:
+
+1. Go to Render dashboard
+2. Select your web service
+3. Click "Environment" tab
+4. Update these variables with your actual database credentials:
+   ```
+   DB_HOST=your-actual-database-host
+   DB_USER=your-actual-database-user
+   DB_PASSWORD=your-actual-database-password
+   DB_NAME=school_management
+   DB_PORT=3306
+   ```
+
+### Step 7: Deploy Backend
+1. Click "Create Web Service" (if not already created)
+2. Wait for deployment (5-10 minutes)
+3. Check logs for any errors
+4. Your backend will be live at: `https://school-management-backend.onrender.com`
+
+### Step 8: Verify Backend Deployment
+
+**Test the backend:**
+1. Visit: `https://your-backend-url.onrender.com/health` (if you have a health endpoint)
+2. Or test login endpoint with Postman/curl
+3. Check Render logs for any errors
+
+**Common Issues:**
+- Database connection error → Check DB credentials in environment variables
+- Module not found → Make sure `npm install` ran successfully
+- Port error → Render automatically assigns PORT, make sure your code uses `process.env.PORT`
 
 ---
 
@@ -339,3 +447,236 @@ Before going live:
 Your school management system is now live and accessible from anywhere!
 
 Share the frontend URL with your users and start managing your school digitally.
+
+
+---
+
+## 📋 Complete Environment Variables Reference
+
+### Backend Environment Variables (Render)
+
+Copy these to Render → Environment tab:
+
+```bash
+# Database Configuration
+# For local: localhost, root, empty password
+# For production: Use PlanetScale/Railway/Aiven credentials
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=school_management
+DB_PORT=3306
+
+# JWT Secret (CRITICAL: Change in production!)
+# Generate strong random string (32+ characters)
+JWT_SECRET=school_mgmt_2026_super_secret_jwt_key_production_xyz123
+
+# Cloudinary Configuration
+# Get from: https://cloudinary.com/console
+CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_API_KEY=123456789012345
+CLOUDINARY_API_SECRET=your-api-secret
+
+# Server Configuration
+PORT=10000
+NODE_ENV=production
+
+# Frontend URL (Update after Vercel deployment)
+FRONTEND_URL=https://your-app.vercel.app
+```
+
+### Frontend Environment Variables (Vercel)
+
+Copy these to Vercel → Settings → Environment Variables:
+
+```bash
+# Backend API URL (Update with your Render URL)
+VITE_API_URL=https://school-management-backend.onrender.com
+```
+
+---
+
+## 🔐 How to Get Each Credential
+
+### Database Credentials
+
+**For Local Development:**
+```
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=          (leave empty)
+DB_NAME=school_management
+DB_PORT=3306
+```
+
+**For Production (PlanetScale):**
+1. Go to https://planetscale.com
+2. Create database
+3. Click "Connect" → "Node.js"
+4. Copy credentials:
+```
+DB_HOST=aws.connect.psdb.cloud
+DB_USER=xxxxxxxxxx
+DB_PASSWORD=pscale_pw_xxxxxxxxxx
+DB_NAME=school-management
+DB_PORT=3306
+```
+
+### JWT Secret
+
+**Generate a strong secret:**
+
+Option 1: Use Node.js
+```bash
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
+
+Option 2: Use online generator
+- Go to: https://randomkeygen.com
+- Copy a "Fort Knox Password"
+
+Option 3: Create your own
+- Use 32+ characters
+- Mix letters, numbers, symbols
+- Example: `SchoolMgmt2026!SecureJWT#Key$Production%xyz123`
+
+### Cloudinary Credentials
+
+1. Go to: https://cloudinary.com
+2. Sign up (free tier available)
+3. Go to Dashboard
+4. Copy these values:
+   - Cloud Name: `your-cloud-name`
+   - API Key: `123456789012345`
+   - API Secret: `your-api-secret`
+
+### Frontend URL
+
+1. Deploy frontend on Vercel first
+2. Copy the URL: `https://your-app.vercel.app`
+3. Add to Render backend environment variables
+
+---
+
+## ⚠️ Important Security Notes
+
+### DO NOT:
+- ❌ Use default JWT_SECRET in production
+- ❌ Commit .env file to git
+- ❌ Share credentials publicly
+- ❌ Use weak passwords
+- ❌ Use localhost database in production
+
+### DO:
+- ✅ Use strong, unique JWT_SECRET
+- ✅ Use environment variables
+- ✅ Use cloud database for production
+- ✅ Enable SSL/TLS connections
+- ✅ Regular backups
+- ✅ Monitor access logs
+
+---
+
+## 🧪 Test Your Configuration
+
+### Test Backend Locally
+
+Create `test-config.js` in backend folder:
+
+```javascript
+require('dotenv').config();
+
+console.log('Environment Variables Check:');
+console.log('✓ DB_HOST:', process.env.DB_HOST);
+console.log('✓ DB_USER:', process.env.DB_USER);
+console.log('✓ DB_NAME:', process.env.DB_NAME);
+console.log('✓ JWT_SECRET:', process.env.JWT_SECRET ? '✓ Set' : '✗ Missing');
+console.log('✓ CLOUDINARY_CLOUD_NAME:', process.env.CLOUDINARY_CLOUD_NAME ? '✓ Set' : '✗ Missing');
+console.log('✓ PORT:', process.env.PORT);
+```
+
+Run: `node test-config.js`
+
+### Test Database Connection
+
+```javascript
+const mysql = require('mysql2');
+require('dotenv').config();
+
+const connection = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT
+});
+
+connection.connect((err) => {
+  if (err) {
+    console.error('❌ Database connection failed:', err.message);
+  } else {
+    console.log('✅ Database connected successfully!');
+  }
+  connection.end();
+});
+```
+
+---
+
+## 📝 Deployment Checklist
+
+### Before Deploying:
+
+- [ ] GitHub repository pushed
+- [ ] Database credentials ready
+- [ ] Cloudinary account created
+- [ ] JWT_SECRET generated
+- [ ] All environment variables prepared
+- [ ] Local testing completed
+
+### During Deployment:
+
+- [ ] Backend deployed on Render
+- [ ] Environment variables added to Render
+- [ ] Database schema imported
+- [ ] Backend tested and working
+- [ ] Frontend deployed on Vercel
+- [ ] Frontend environment variables added
+- [ ] CORS updated with frontend URL
+
+### After Deployment:
+
+- [ ] Test login functionality
+- [ ] Test all user portals
+- [ ] Test file uploads
+- [ ] Test notifications
+- [ ] Test database operations
+- [ ] Monitor logs for errors
+- [ ] Set up backups
+- [ ] Configure monitoring
+
+---
+
+## 🎯 Quick Reference
+
+### Your Configuration Files
+
+**Local Development:**
+- `backend/.env` - Your local environment variables
+- `backend/.env.example` - Template for others
+
+**Production:**
+- Render → Environment tab - Backend variables
+- Vercel → Settings → Environment Variables - Frontend variables
+
+### Your Credentials Location
+
+- **Database**: PlanetScale/Railway/Aiven dashboard
+- **Cloudinary**: https://cloudinary.com/console
+- **JWT Secret**: Generate new for production
+- **URLs**: Render and Vercel dashboards
+
+---
+
+**Updated**: February 28, 2026
+**Status**: Ready for deployment with correct database configuration
