@@ -1,0 +1,416 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary: #6366f1;
+  --primary-hover: #4f46e5;
+  --secondary: #0ea5e9;
+  --accent: #f43f5e;
+  --bg-dark: #0f172a;
+  --card-bg: rgba(30, 41, 59, 0.7);
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --border-color: rgba(255, 255, 255, 0.1);
+  --glass-bg: rgba(255, 255, 255, 0.03);
+}
+
+/* Admin Portal Theme - Modern Cyan & Coral */
+body.admin-theme {
+  --primary: #06b6d4;
+  --primary-hover: #0891b2;
+  --secondary: #f97316;
+  --accent: #ec4899;
+  --bg-dark: #0a1929;
+  --card-bg: rgba(6, 182, 212, 0.15);
+  --text-primary: #f0fdfa;
+  --text-secondary: #99f6e4;
+  --border-color: rgba(6, 182, 212, 0.4);
+  --glass-bg: rgba(6, 182, 212, 0.08);
+  background: linear-gradient(135deg, #0a1929 0%, #0c2340 50%, #1a1a2e 100%) !important;
+}
+
+body.admin-theme::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 15% 20%, rgba(6, 182, 212, 0.2) 0%, transparent 40%),
+    radial-gradient(circle at 85% 80%, rgba(249, 115, 22, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+  animation: pulse 8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+body.admin-theme .glass {
+  background: linear-gradient(135deg, 
+    rgba(6, 182, 212, 0.12), 
+    rgba(14, 165, 233, 0.08),
+    rgba(6, 182, 212, 0.12)
+  );
+  border: 1px solid rgba(6, 182, 212, 0.5);
+  box-shadow: 
+    0 8px 32px rgba(6, 182, 212, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+body.admin-theme .glass::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(6, 182, 212, 0.1), 
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+body.admin-theme .glass:hover::before {
+  left: 100%;
+}
+
+body.admin-theme .btn-primary {
+  background: linear-gradient(135deg, #06b6d4 0%, #f97316 100%);
+  box-shadow: 
+    0 4px 15px rgba(6, 182, 212, 0.4),
+    0 0 20px rgba(249, 115, 22, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+body.admin-theme .btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+body.admin-theme .btn-primary:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+body.admin-theme .btn-primary:hover {
+  box-shadow: 
+    0 6px 25px rgba(6, 182, 212, 0.6),
+    0 0 30px rgba(249, 115, 22, 0.4);
+  transform: translateY(-3px) scale(1.02);
+}
+
+body.admin-theme .input-field {
+  background: rgba(6, 182, 212, 0.08);
+  border: 2px solid rgba(6, 182, 212, 0.3);
+  transition: all 0.3s ease;
+}
+
+body.admin-theme .input-field:focus {
+  border-color: #06b6d4;
+  background: rgba(6, 182, 212, 0.12);
+  box-shadow: 
+    0 0 0 4px rgba(6, 182, 212, 0.15),
+    0 4px 12px rgba(6, 182, 212, 0.3);
+  transform: translateY(-2px);
+}
+
+body.admin-theme h1 {
+  background: linear-gradient(135deg, #06b6d4, #f97316, #ec4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 2px 8px rgba(6, 182, 212, 0.3));
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { filter: drop-shadow(0 2px 8px rgba(6, 182, 212, 0.3)); }
+  50% { filter: drop-shadow(0 2px 12px rgba(249, 115, 22, 0.4)); }
+}
+
+body.admin-theme h2, 
+body.admin-theme h3 {
+  background: linear-gradient(135deg, #99f6e4, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Scrollbar styling for admin theme */
+body.admin-theme ::-webkit-scrollbar {
+  width: 10px;
+}
+
+body.admin-theme ::-webkit-scrollbar-track {
+  background: rgba(6, 182, 212, 0.1);
+  border-radius: 10px;
+}
+
+body.admin-theme ::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #06b6d4, #f97316);
+  border-radius: 10px;
+}
+
+body.admin-theme ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #0891b2, #ea580c);
+}
+
+/* Light Mode Theme */
+body.light-mode {
+  --primary: #3b82f6;
+  --primary-hover: #2563eb;
+  --secondary: #f59e0b;
+  --accent: #ec4899;
+  --bg-dark: #f8fafc;
+  --card-bg: rgba(255, 255, 255, 0.9);
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --border-color: rgba(0, 0, 0, 0.1);
+  --glass-bg: rgba(255, 255, 255, 0.5);
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f8fafc 100%) !important;
+  color: #1e293b;
+}
+
+body.light-mode::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(245, 158, 11, 0.06) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+body.light-mode .glass {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(10px);
+}
+
+body.light-mode .btn-primary {
+  background: linear-gradient(135deg, #3b82f6, #f59e0b);
+  color: white;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+body.light-mode .btn-primary:hover {
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+body.light-mode .input-field {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  color: #1e293b;
+}
+
+body.light-mode .input-field:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+body.light-mode h1,
+body.light-mode h2,
+body.light-mode h3 {
+  color: #1e293b;
+}
+
+body.light-mode ::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+body.light-mode ::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #3b82f6, #f59e0b);
+}
+
+body.light-mode ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #2563eb, #ea580c);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Outfit', sans-serif;
+}
+
+body {
+  background: radial-gradient(circle at top right, #1e1b4b, #0f172a);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+.glass {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+}
+
+.input-field {
+  background: var(--glass-bg);
+  border: 1px solid var(--border-color);
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.input-field:focus {
+  border-color: var(--primary);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Parent Portal Theme Variables */
+[data-theme="bright"] {
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F8F9FA;
+  --text-primary: #1A1A1A;
+  --text-secondary: #666666;
+  --welcome-color: #FFD700;
+  --welcome-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  --welcome-bg-start: #FFF9E6;
+  --welcome-bg-end: #FFE4B3;
+  --border-color: #E0E0E0;
+  --card-shadow: rgba(0, 0, 0, 0.1);
+  --primary-color: #6366f1;
+}
+
+[data-theme="dark"] {
+  --bg-primary: #1A1A1A;
+  --bg-secondary: #2A2A2A;
+  --text-primary: #FFFFFF;
+  --text-secondary: #CCCCCC;
+  --welcome-color: #FFD700;
+  --welcome-shadow: 0 0 20px rgba(255, 215, 0, 0.5), 2px 2px 4px rgba(0, 0, 0, 0.8);
+  --welcome-bg-start: #2A2A2A;
+  --welcome-bg-end: #1A1A1A;
+  --border-color: #404040;
+  --card-shadow: rgba(255, 215, 0, 0.2);
+  --primary-color: #FFD700;
+}
+
+/* Responsive Design - Same Size on Phone and PC */
+html {
+  font-size: 16px;
+}
+
+/* Mobile devices (phones) */
+@media (max-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+  
+  body {
+    padding: 0;
+    margin: 0;
+  }
+  
+  /* Ensure full viewport width */
+  #root, #app {
+    width: 100vw;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+}
+
+/* Tablets */
+@media (min-width: 769px) and (max-width: 1024px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1025px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+/* Ensure consistent sizing across all devices */
+@media (max-width: 480px) {
+  /* Small phones */
+  html {
+    font-size: 15px;
+  }
+  
+  body {
+    padding: 0;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  /* Large phones and small tablets */
+  html {
+    font-size: 16px;
+  }
+}
+
+/* Prevent zoom on input focus for iOS */
+@media (max-width: 768px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Ensure viewport is set correctly */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+    padding-top: max(0px, env(safe-area-inset-top));
+    padding-bottom: max(0px, env(safe-area-inset-bottom));
+  }
+}
