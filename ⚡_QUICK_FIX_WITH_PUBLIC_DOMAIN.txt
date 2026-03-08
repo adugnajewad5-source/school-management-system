@@ -1,0 +1,86 @@
+═══════════════════════════════════════════════════════════════════════════════
+⚡ QUICK FIX - USE RAILWAY PUBLIC DOMAIN
+═══════════════════════════════════════════════════════════════════════════════
+
+🔴 PROBLEM: Private domain doesn't work on Render
+🟢 SOLUTION: Use public domain instead
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 1: GET YOUR RAILWAY PUBLIC DOMAIN (2 MINUTES)
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Go to: https://railway.app/dashboard
+2. Click your MySQL database
+3. Look for "Public Domain" or "TCP Proxy Domain"
+4. Copy it (looks like: gateway.railway.app)
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 2: SET RENDER ENVIRONMENT VARIABLES (5 MINUTES)
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Go to: https://dashboard.render.com
+2. Click: school-management-backend-gnav
+3. Click: Environment
+4. Add/Update these 8 variables:
+
+   DB_HOST = [YOUR_RAILWAY_PUBLIC_DOMAIN]  ← Replace with your domain!
+   DB_USER = root
+   DB_PASSWORD = oGGYFZAYYVfJyMReLooWEFXCiWETNGep
+   DB_NAME = railway
+   DB_PORT = 3306
+   NODE_ENV = production
+   JWT_SECRET = your_super_secret_jwt_key_123_change_in_production
+   FRONTEND_URL = https://school-management-system.vercel.app
+
+5. Click: Redeploy
+6. Wait 2-3 minutes
+7. Check Logs - should see: "Connected to MySQL database" ✅
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 3: SET VERCEL ENVIRONMENT VARIABLE (2 MINUTES)
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Go to: https://vercel.com/dashboard
+2. Click: school-management-system
+3. Click: Settings → Environment Variables
+4. Add:
+   VITE_API_URL = https://school-management-backend-gnav.onrender.com
+5. Click: Save and Redeploy
+6. Wait 2-3 minutes
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 4: TEST (2 MINUTES)
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Open: https://school-management-system.vercel.app
+2. Login: admin / Admin@123
+3. Done! ✅
+
+═══════════════════════════════════════════════════════════════════════════════
+EXAMPLE
+═══════════════════════════════════════════════════════════════════════════════
+
+If your Railway public domain is: gateway.railway.app
+
+Then set DB_HOST to: gateway.railway.app
+
+NOT: ${{RAILWAY_PRIVATE_DOMAIN}}
+NOT: mysql.railway.internal
+NOT: localhost
+
+═══════════════════════════════════════════════════════════════════════════════
+TOTAL TIME: ~11 MINUTES
+═══════════════════════════════════════════════════════════════════════════════
+
+Get domain: 2 min
+Set Render: 5 min
+Set Vercel: 2 min
+Test: 2 min
+
+═══════════════════════════════════════════════════════════════════════════════
+NEED HELP FINDING THE DOMAIN?
+═══════════════════════════════════════════════════════════════════════════════
+
+Read: 📍_FIND_RAILWAY_PUBLIC_DOMAIN.txt
+
+═══════════════════════════════════════════════════════════════════════════════

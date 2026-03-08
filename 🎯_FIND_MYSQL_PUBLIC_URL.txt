@@ -1,0 +1,68 @@
+═══════════════════════════════════════════════════════════════════════════════
+🎯 FIND MYSQL_PUBLIC_URL IN RAILWAY VARIABLES
+═══════════════════════════════════════════════════════════════════════════════
+
+Perfect! You're in the Variables tab! I can see the list.
+
+═══════════════════════════════════════════════════════════════════════════════
+WHAT YOU SEE:
+═══════════════════════════════════════════════════════════════════════════════
+
+9 Service Variables:
+
+1. MYSQL_DATETIME
+2. MYSQL_PUBLIC_URL ← THIS ONE!
+3. MYSQL_ROOT_PASSWORD
+4. MYSQL_URI
+5. MYSQLDATABASE
+6. MYSQLDOMAIN
+7. MYSQLPASSWORD
+8. MYSQLPORT
+9. MYSQLUSER
+
+═══════════════════════════════════════════════════════════════════════════════
+WHAT TO DO:
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Look for: MYSQL_PUBLIC_URL
+2. Click on it to see the full value
+3. The value will look like:
+   mysql://root:password@gateway.railway.app:3306/railway
+
+4. Extract just the domain part:
+   gateway.railway.app
+
+That's your public domain!
+
+═══════════════════════════════════════════════════════════════════════════════
+ALTERNATIVE: LOOK FOR MYSQL_DOMAIN
+═══════════════════════════════════════════════════════════════════════════════
+
+If MYSQL_PUBLIC_URL doesn't show the domain clearly, try:
+  MYSQLDOMAIN
+
+This should have just the domain name like:
+  gateway.railway.app
+
+═══════════════════════════════════════════════════════════════════════════════
+WHAT YOU'RE LOOKING FOR:
+═══════════════════════════════════════════════════════════════════════════════
+
+The public domain will be something like:
+  gateway.railway.app
+  OR
+  mysql-prod-1234.railway.app
+  OR
+  [something].railway.app
+
+═══════════════════════════════════════════════════════════════════════════════
+NEXT STEP:
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Find MYSQL_PUBLIC_URL or MYSQLDOMAIN
+2. Copy the domain part (e.g., gateway.railway.app)
+3. Go to Render
+4. Set DB_HOST to this domain
+5. Redeploy
+
+═══════════════════════════════════════════════════════════════════════════════

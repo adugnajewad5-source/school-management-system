@@ -1,0 +1,114 @@
+═══════════════════════════════════════════════════════════════════════════════
+☑️ SIMPLE CHECKLIST - JUST CHECK OFF EACH ITEM
+═══════════════════════════════════════════════════════════════════════════════
+
+PART 1: SET RENDER ENVIRONMENT VARIABLES
+═══════════════════════════════════════════════════════════════════════════════
+
+☐ Open https://dashboard.render.com
+☐ Click: school-management-backend-gnav
+☐ Click: Environment (left sidebar)
+
+☐ Add Variable 1:
+  Key: DB_HOST
+  Value: ${{RAILWAY_PRIVATE_DOMAIN}}
+  Click: Save
+
+☐ Add Variable 2:
+  Key: DB_USER
+  Value: root
+  Click: Save
+
+☐ Add Variable 3:
+  Key: DB_PASSWORD
+  Value: oGGYFZAYYVfJyMReLooWEFXCiWETNGep
+  Click: Save
+
+☐ Add Variable 4:
+  Key: DB_NAME
+  Value: railway
+  Click: Save
+
+☐ Add Variable 5:
+  Key: DB_PORT
+  Value: 3306
+  Click: Save
+
+☐ Add Variable 6:
+  Key: NODE_ENV
+  Value: production
+  Click: Save
+
+☐ Add Variable 7:
+  Key: JWT_SECRET
+  Value: your_super_secret_jwt_key_123_change_in_production
+  Click: Save
+
+☐ Add Variable 8:
+  Key: FRONTEND_URL
+  Value: https://school-management-system.vercel.app
+  Click: Save
+
+☐ Verify all 8 variables are in the list
+☐ Click: Redeploy
+☐ Wait 2-3 minutes
+☐ Click: Logs
+☐ See message: "Connected to MySQL database" ✅
+
+═══════════════════════════════════════════════════════════════════════════════
+PART 2: SET VERCEL ENVIRONMENT VARIABLE
+═══════════════════════════════════════════════════════════════════════════════
+
+☐ Open https://vercel.com/dashboard
+☐ Click: school-management-system
+☐ Click: Settings
+☐ Click: Environment Variables
+
+☐ Add Variable:
+  Name: VITE_API_URL
+  Value: https://school-management-backend-gnav.onrender.com
+  Select: Production
+  Click: Save
+
+☐ Click: Redeploy
+☐ Wait 2-3 minutes
+
+═══════════════════════════════════════════════════════════════════════════════
+PART 3: TEST
+═══════════════════════════════════════════════════════════════════════════════
+
+☐ Open https://school-management-system.vercel.app
+☐ Login with:
+  Username: admin
+  Password: Admin@123
+☐ Click: Login
+☐ See dashboard (no errors) ✅
+
+═══════════════════════════════════════════════════════════════════════════════
+VERIFICATION
+═══════════════════════════════════════════════════════════════════════════════
+
+Backend (Render):
+☐ Logs show "Connected to MySQL database"
+☐ No ECONNREFUSED errors
+☐ No ENOTFOUND errors
+☐ Service shows as "Live"
+
+Frontend (Vercel):
+☐ Page loads without errors
+☐ Login page displays
+☐ Can login with admin/Admin@123
+☐ Dashboard displays
+☐ No "Failed to fetch" errors
+
+═══════════════════════════════════════════════════════════════════════════════
+🎉 IF ALL CHECKED: YOU'RE DONE!
+═══════════════════════════════════════════════════════════════════════════════
+
+Your school management system is now deployed and working!
+
+Frontend: https://school-management-system.vercel.app
+Backend: https://school-management-backend-gnav.onrender.com
+Database: Railway
+
+═══════════════════════════════════════════════════════════════════════════════

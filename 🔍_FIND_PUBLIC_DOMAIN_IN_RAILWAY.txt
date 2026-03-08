@@ -1,0 +1,127 @@
+═══════════════════════════════════════════════════════════════════════════════
+🔍 FIND PUBLIC DOMAIN IN RAILWAY - VISUAL GUIDE
+═══════════════════════════════════════════════════════════════════════════════
+
+I see you're in Railway! You're on the Database tab. Here's where to find it:
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 1: YOU ARE HERE (Database Tab)
+═══════════════════════════════════════════════════════════════════════════════
+
+You can see:
+  ✓ MySQL (the database)
+  ✓ Tabs: Deployments, Database, Backups, Variables, Metrics, Settings
+  ✓ Sub-tabs: Data, Config
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 2: CLICK "Variables" TAB
+═══════════════════════════════════════════════════════════════════════════════
+
+Look at the tabs at the top:
+  Deployments | Database | Backups | Variables | Metrics | Settings
+                                      ↑
+                                  CLICK HERE
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 3: FIND THE PUBLIC DOMAIN VARIABLE
+═══════════════════════════════════════════════════════════════════════════════
+
+After clicking "Variables", you'll see a list of variables.
+
+Look for ONE of these:
+  ✓ RAILWAY_TCP_PROXY_DOMAIN
+  ✓ RAILWAY_PUBLIC_DOMAIN
+  ✓ MYSQL_PUBLIC_URL
+
+The value will look like:
+  gateway.railway.app
+  OR
+  mysql-prod-1234.railway.app
+  OR
+  [something].railway.app
+
+═══════════════════════════════════════════════════════════════════════════════
+VISUAL GUIDE:
+═══════════════════════════════════════════════════════════════════════════════
+
+Current Screen (Database Tab):
+┌─────────────────────────────────────────────────────────┐
+│ MySQL                                                   │
+├─────────────────────────────────────────────────────────┤
+│ Deployments | Database | Backups | Variables | Metrics  │
+│                         ↑
+│                    YOU ARE HERE
+│
+│ Data | Config
+│
+│ You have no tables
+│ [Create table]
+│
+└─────────────────────────────────────────────────────────┘
+
+Next Screen (Variables Tab):
+┌─────────────────────────────────────────────────────────┐
+│ MySQL                                                   │
+├─────────────────────────────────────────────────────────┤
+│ Deployments | Database | Backups | Variables | Metrics  │
+│                                      ↑
+│                                  CLICK HERE
+│
+│ Variables List:
+│ ┌─────────────────────────────────────────────────────┐
+│ │ RAILWAY_TCP_PROXY_DOMAIN = gateway.railway.app    │ ← COPY THIS
+│ │ RAILWAY_PRIVATE_DOMAIN = mysql.railway.internal   │
+│ │ MYSQL_USER = root                                 │
+│ │ MYSQL_PASSWORD = oGGYFZAYYVfJyMReLooWEFXCiWETNGep│
+│ │ MYSQL_DATABASE = railway                          │
+│ │ ... (more variables)                              │
+│ └─────────────────────────────────────────────────────┘
+│
+└─────────────────────────────────────────────────────────┘
+
+═══════════════════════════════════════════════════════════════════════════════
+EXACT STEPS:
+═══════════════════════════════════════════════════════════════════════════════
+
+1. You're currently on: Database tab
+2. Look at the tabs at the top
+3. Click: "Variables" tab
+4. Look for: RAILWAY_TCP_PROXY_DOMAIN
+5. Copy the value (e.g., gateway.railway.app)
+6. That's your public domain!
+
+═══════════════════════════════════════════════════════════════════════════════
+WHAT YOU'RE LOOKING FOR:
+═══════════════════════════════════════════════════════════════════════════════
+
+Variable Name: RAILWAY_TCP_PROXY_DOMAIN
+Variable Value: gateway.railway.app  ← COPY THIS VALUE
+
+This is your public domain!
+
+═══════════════════════════════════════════════════════════════════════════════
+AFTER YOU FIND IT:
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Copy the value (e.g., gateway.railway.app)
+2. Go to: https://dashboard.render.com
+3. Click: school-management-backend-gnav
+4. Click: Environment
+5. Find: DB_HOST
+6. Change it to: [YOUR_PUBLIC_DOMAIN]
+7. Click: Save
+8. Click: Redeploy
+
+═══════════════════════════════════════════════════════════════════════════════
+QUICK CHECKLIST:
+═══════════════════════════════════════════════════════════════════════════════
+
+☐ I'm in Railway dashboard
+☐ I can see MySQL database
+☐ I can see tabs: Deployments, Database, Backups, Variables, Metrics, Settings
+☐ I click "Variables" tab
+☐ I find "RAILWAY_TCP_PROXY_DOMAIN"
+☐ I copy the value (e.g., gateway.railway.app)
+☐ I have my public domain!
+
+═══════════════════════════════════════════════════════════════════════════════

@@ -1,0 +1,110 @@
+═══════════════════════════════════════════════════════════════════════════════
+🎯 MANUAL STEPS REQUIRED - I CANNOT DO THESE
+═══════════════════════════════════════════════════════════════════════════════
+
+I can automate code changes and GitHub pushes, but I CANNOT access web dashboards.
+
+These steps MUST be done manually by you:
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 1: GET RAILWAY PUBLIC DOMAIN (Manual - 1 min)
+═══════════════════════════════════════════════════════════════════════════════
+
+YOU DO THIS:
+1. Go to: https://railway.app/dashboard
+2. Click: MySQL database
+3. Click: Variables tab
+4. Find: MYSQL_PUBLIC_URL or MYSQLDOMAIN
+5. Copy the domain (e.g., gateway.railway.app)
+
+RESULT: You have your public domain
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 2: SET RENDER ENVIRONMENT VARIABLES (Manual - 5 min)
+═══════════════════════════════════════════════════════════════════════════════
+
+YOU DO THIS:
+1. Go to: https://dashboard.render.com
+2. Click: school-management-backend-gnav
+3. Click: Environment
+4. Add 8 variables:
+
+   DB_HOST = [YOUR_RAILWAY_PUBLIC_DOMAIN]
+   DB_USER = root
+   DB_PASSWORD = oGGYFZAYYVfJyMReLooWEFXCiWETNGep
+   DB_NAME = railway
+   DB_PORT = 3306
+   NODE_ENV = production
+   JWT_SECRET = your_super_secret_jwt_key_123_change_in_production
+   FRONTEND_URL = https://school-management-system-4hx2jvfn2.vercel.app
+
+5. Click: Redeploy
+6. Wait 2-3 minutes
+7. Check Logs - should see: "Connected to MySQL database"
+
+RESULT: Backend is connected to Railway database
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 3: SET VERCEL ENVIRONMENT VARIABLE (Manual - 2 min)
+═══════════════════════════════════════════════════════════════════════════════
+
+YOU DO THIS:
+1. Go to: https://vercel.com/dashboard
+2. Click: school-management-system
+3. Click: Settings → Environment Variables
+4. Add:
+   Name: VITE_API_URL
+   Value: https://school-management-backend-gnav.onrender.com
+5. Click: Save
+6. Click: Redeploy
+7. Wait 2-3 minutes
+
+RESULT: Frontend is connected to backend
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 4: TEST (Manual - 2 min)
+═══════════════════════════════════════════════════════════════════════════════
+
+YOU DO THIS:
+1. Open: https://school-management-system-4hx2jvfn2.vercel.app
+2. Login: admin / Admin@123
+3. Verify dashboard loads
+
+RESULT: System is working!
+
+═══════════════════════════════════════════════════════════════════════════════
+WHY I CANNOT DO THESE STEPS:
+═══════════════════════════════════════════════════════════════════════════════
+
+✗ I cannot access web dashboards (Render, Vercel, Railway)
+✗ I cannot click buttons on websites
+✗ I cannot enter text into web forms
+✗ I cannot authenticate to your accounts
+✗ These require human interaction with web interfaces
+
+═══════════════════════════════════════════════════════════════════════════════
+WHAT I CAN DO:
+═══════════════════════════════════════════════════════════════════════════════
+
+✓ Modify code files
+✓ Push code to GitHub
+✓ Create guides and documentation
+✓ Explain what needs to be done
+✓ Help troubleshoot issues
+
+═══════════════════════════════════════════════════════════════════════════════
+TOTAL TIME FOR YOU: ~10 MINUTES
+═══════════════════════════════════════════════════════════════════════════════
+
+Get domain: 1 min
+Set Render: 5 min
+Set Vercel: 2 min
+Test: 2 min
+
+═══════════════════════════════════════════════════════════════════════════════
+NEXT: DO THESE STEPS NOW!
+═══════════════════════════════════════════════════════════════════════════════
+
+Start with Step 1: Get your Railway public domain
+
+═══════════════════════════════════════════════════════════════════════════════

@@ -1,0 +1,49 @@
+═══════════════════════════════════════════════════════════════════════════════
+⚡ RAILWAY - CLICK VARIABLES TAB
+═══════════════════════════════════════════════════════════════════════════════
+
+You're in Railway. Here's what to do:
+
+═══════════════════════════════════════════════════════════════════════════════
+WHAT YOU SEE NOW:
+═══════════════════════════════════════════════════════════════════════════════
+
+At the top of the page, you see tabs:
+
+  Deployments | Database | Backups | Variables | Metrics | Settings
+                          ↑
+                    YOU ARE HERE (Database tab)
+
+═══════════════════════════════════════════════════════════════════════════════
+WHAT TO DO:
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Click the "Variables" tab
+   (It's right after "Backups")
+
+2. You'll see a list of variables
+
+3. Find: RAILWAY_TCP_PROXY_DOMAIN
+
+4. Copy the value
+   (It looks like: gateway.railway.app)
+
+═══════════════════════════════════════════════════════════════════════════════
+THAT'S YOUR PUBLIC DOMAIN!
+═══════════════════════════════════════════════════════════════════════════════
+
+Example:
+  RAILWAY_TCP_PROXY_DOMAIN = gateway.railway.app
+
+Copy: gateway.railway.app
+
+═══════════════════════════════════════════════════════════════════════════════
+NEXT STEP:
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Copy your public domain
+2. Go to: https://dashboard.render.com
+3. Update DB_HOST with your public domain
+4. Redeploy
+
+═══════════════════════════════════════════════════════════════════════════════

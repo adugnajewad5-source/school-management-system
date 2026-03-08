@@ -1,0 +1,68 @@
+═══════════════════════════════════════════════════════════════════════════════
+⚡ COPY YOUR PUBLIC DOMAIN NOW
+═══════════════════════════════════════════════════════════════════════════════
+
+You're in Railway Variables. Here's what to do:
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 1: FIND THE DOMAIN
+═══════════════════════════════════════════════════════════════════════════════
+
+Look at the list of variables:
+
+1. MYSQL_DATETIME
+2. MYSQL_PUBLIC_URL ← CLICK THIS ONE
+3. MYSQL_ROOT_PASSWORD
+4. MYSQL_URI
+5. MYSQLDATABASE
+6. MYSQLDOMAIN ← OR THIS ONE
+7. MYSQLPASSWORD
+8. MYSQLPORT
+9. MYSQLUSER
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 2: CLICK ON MYSQL_PUBLIC_URL
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Click on the row with "MYSQL_PUBLIC_URL"
+2. You'll see the full value
+3. It will look like:
+   mysql://root:password@gateway.railway.app:3306/railway
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 3: EXTRACT THE DOMAIN
+═══════════════════════════════════════════════════════════════════════════════
+
+From: mysql://root:password@gateway.railway.app:3306/railway
+
+Extract: gateway.railway.app
+
+That's your public domain!
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 4: COPY IT
+═══════════════════════════════════════════════════════════════════════════════
+
+Copy: gateway.railway.app (or whatever your domain is)
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 5: GO TO RENDER
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Open new tab
+2. Go to: https://dashboard.render.com
+3. Click: school-management-backend-gnav
+4. Click: Environment
+5. Find: DB_HOST
+6. Change it to: gateway.railway.app (your domain)
+7. Click: Save
+8. Click: Redeploy
+
+═══════════════════════════════════════════════════════════════════════════════
+DONE!
+═══════════════════════════════════════════════════════════════════════════════
+
+Wait 2-3 minutes and check Render logs for:
+  "Connected to MySQL database" ✅
+
+═══════════════════════════════════════════════════════════════════════════════

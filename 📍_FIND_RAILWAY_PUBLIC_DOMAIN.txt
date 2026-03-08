@@ -1,0 +1,156 @@
+═══════════════════════════════════════════════════════════════════════════════
+📍 HOW TO FIND YOUR RAILWAY PUBLIC DOMAIN
+═══════════════════════════════════════════════════════════════════════════════
+
+⚠️ IMPORTANT: You need the PUBLIC domain, not the private domain!
+
+═══════════════════════════════════════════════════════════════════════════════
+METHOD 1: FROM RAILWAY DASHBOARD (EASIEST)
+═══════════════════════════════════════════════════════════════════════════════
+
+STEP 1: Open Railway Dashboard
+────────────────────────────────────────────────────────────────────────────────
+1. Go to: https://railway.app/dashboard
+2. Login with your Railway account
+
+STEP 2: Find Your MySQL Database
+────────────────────────────────────────────────────────────────────────────────
+1. You should see your project
+2. Look for: "MySQL" or "Database"
+3. Click on it
+
+STEP 3: Find the Public Domain
+────────────────────────────────────────────────────────────────────────────────
+1. You're now in the database details
+2. Look for a tab or section called: "Connect"
+3. You should see something like:
+
+   Public Domain: gateway.railway.app
+   or
+   TCP Proxy Domain: gateway.railway.app
+
+4. Copy this domain (it will look like: gateway.railway.app or mysql-prod-xxxx.railway.app)
+
+STEP 4: Copy the Exact Domain
+────────────────────────────────────────────────────────────────────────────────
+The public domain will be something like:
+  - gateway.railway.app
+  - mysql-prod-1234.railway.app
+  - mysql.railway.app
+  - [something].railway.app
+
+Copy the EXACT text (no extra spaces or characters)
+
+═══════════════════════════════════════════════════════════════════════════════
+METHOD 2: FROM ENVIRONMENT VARIABLES
+═══════════════════════════════════════════════════════════════════════════════
+
+STEP 1: Open Railway Dashboard
+────────────────────────────────────────────────────────────────────────────────
+1. Go to: https://railway.app/dashboard
+2. Click your MySQL database
+
+STEP 2: Click Variables Tab
+────────────────────────────────────────────────────────────────────────────────
+1. Look for a tab called: "Variables"
+2. Click on it
+
+STEP 3: Find the Public Domain Variable
+────────────────────────────────────────────────────────────────────────────────
+1. Look for a variable called: RAILWAY_TCP_PROXY_DOMAIN
+2. The value is your public domain
+3. Copy it
+
+Example:
+  Variable Name: RAILWAY_TCP_PROXY_DOMAIN
+  Variable Value: gateway.railway.app ← COPY THIS
+
+═══════════════════════════════════════════════════════════════════════════════
+WHAT IT LOOKS LIKE
+═══════════════════════════════════════════════════════════════════════════════
+
+Railway Dashboard:
+┌─────────────────────────────────────────────────────────┐
+│ Your Project                                            │
+├─────────────────────────────────────────────────────────┤
+│ ┌─────────────────────────────────────────────────────┐ │
+│ │ MySQL Database                                      │ │
+│ ├─────────────────────────────────────────────────────┤ │
+│ │ Connect  │ Variables  │ Logs                        │ │
+│ ├─────────────────────────────────────────────────────┤ │
+│ │                                                     │ │
+│ │ Public Domain: gateway.railway.app ← COPY THIS    │ │
+│ │ Port: 3306                                          │ │
+│ │ Username: root                                      │ │
+│ │ Password: oGGYFZAYYVfJyMReLooWEFXCiWETNGep        │ │
+│ │                                                     │ │
+│ └─────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────┘
+
+═══════════════════════════════════════════════════════════════════════════════
+WHAT YOU'RE LOOKING FOR
+═══════════════════════════════════════════════════════════════════════════════
+
+You need to find something that looks like:
+
+  gateway.railway.app
+  OR
+  mysql-prod-1234.railway.app
+  OR
+  mysql.railway.app
+  OR
+  [something].railway.app
+
+It will be a domain name ending in ".railway.app"
+
+═══════════════════════════════════════════════════════════════════════════════
+COMMON MISTAKES
+═══════════════════════════════════════════════════════════════════════════════
+
+❌ WRONG: Using ${{RAILWAY_PRIVATE_DOMAIN}}
+   This is a variable name, not the actual domain
+   Render can't access private domains
+
+✅ RIGHT: Using gateway.railway.app
+   This is the actual public domain
+   Render can access this
+
+❌ WRONG: Copying the entire connection string
+   Example: mysql://root:password@gateway.railway.app:3306/railway
+   You only need the domain part: gateway.railway.app
+
+✅ RIGHT: Just the domain
+   Example: gateway.railway.app
+
+═══════════════════════════════════════════════════════════════════════════════
+AFTER YOU FIND IT
+═══════════════════════════════════════════════════════════════════════════════
+
+Once you have the public domain (e.g., gateway.railway.app):
+
+1. Go to: https://dashboard.render.com
+2. Click: school-management-backend-gnav
+3. Click: Environment
+4. Find: DB_HOST
+5. Change it to: gateway.railway.app (or your actual domain)
+6. Click: Save
+7. Click: Redeploy
+8. Wait 2-3 minutes
+9. Check Logs for: "Connected to MySQL database"
+
+═══════════════════════════════════════════════════════════════════════════════
+NEED HELP?
+═══════════════════════════════════════════════════════════════════════════════
+
+If you can't find the public domain:
+
+1. Make sure you're logged into Railway
+2. Make sure you're in the right project
+3. Make sure you clicked on the MySQL database
+4. Look for "Connect" tab or "Variables" tab
+5. The domain will be there
+
+If you still can't find it:
+  → Read: 🔧_RAILWAY_PUBLIC_DOMAIN_FIX.md
+
+═══════════════════════════════════════════════════════════════════════════════

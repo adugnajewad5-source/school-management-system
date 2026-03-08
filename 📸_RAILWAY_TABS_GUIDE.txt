@@ -1,0 +1,94 @@
+═══════════════════════════════════════════════════════════════════════════════
+📸 RAILWAY TABS - WHERE TO CLICK
+═══════════════════════════════════════════════════════════════════════════════
+
+You're in Railway MySQL database. Here's exactly where to click:
+
+═══════════════════════════════════════════════════════════════════════════════
+CURRENT SCREEN (What you see):
+═══════════════════════════════════════════════════════════════════════════════
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ Railway                                                                     │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  MySQL                                                                      │
+│                                                                             │
+│  Deployments | Database | Backups | Variables | Metrics | Settings         │
+│               ↑ YOU ARE HERE                                               │
+│                                                                             │
+│  Data | Config                                                              │
+│                                                                             │
+│  You have no tables                                                         │
+│  [Create table]                                                             │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+═══════════════════════════════════════════════════════════════════════════════
+WHAT TO DO:
+═══════════════════════════════════════════════════════════════════════════════
+
+Look at the tabs:
+  Deployments | Database | Backups | Variables | Metrics | Settings
+               ↑ YOU ARE HERE
+
+Click on: Variables
+           ↑ THIS ONE
+
+═══════════════════════════════════════════════════════════════════════════════
+AFTER YOU CLICK VARIABLES:
+═══════════════════════════════════════════════════════════════════════════════
+
+You'll see a list like this:
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ Variables                                                                   │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│ RAILWAY_TCP_PROXY_DOMAIN = gateway.railway.app  ← COPY THIS VALUE         │
+│ RAILWAY_PRIVATE_DOMAIN = mysql.railway.internal                           │
+│ MYSQL_USER = root                                                          │
+│ MYSQL_PASSWORD = oGGYFZAYYVfJyMReLooWEFXCiWETNGep                         │
+│ MYSQL_DATABASE = railway                                                   │
+│ MYSQL_HOST = ${{RAILWAY_PRIVATE_DOMAIN}}                                  │
+│ MYSQL_PORT = 3306                                                          │
+│ ... (more variables)                                                       │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+═══════════════════════════════════════════════════════════════════════════════
+WHAT TO COPY:
+═══════════════════════════════════════════════════════════════════════════════
+
+Find this line:
+  RAILWAY_TCP_PROXY_DOMAIN = gateway.railway.app
+
+Copy the VALUE (the part after the =):
+  gateway.railway.app
+
+That's your public domain!
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP BY STEP:
+═══════════════════════════════════════════════════════════════════════════════
+
+1. You see: Deployments | Database | Backups | Variables | Metrics | Settings
+2. Click: Variables
+3. Look for: RAILWAY_TCP_PROXY_DOMAIN
+4. Copy the value: gateway.railway.app (or whatever yours is)
+5. Done!
+
+═══════════════════════════════════════════════════════════════════════════════
+NEXT:
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Copy your public domain
+2. Go to: https://dashboard.render.com
+3. Click: school-management-backend-gnav
+4. Click: Environment
+5. Find: DB_HOST
+6. Change it to: [YOUR_PUBLIC_DOMAIN]
+7. Click: Save
+8. Click: Redeploy
+
+═══════════════════════════════════════════════════════════════════════════════

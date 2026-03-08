@@ -5,11 +5,29 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
+// Parse database host - handle both full URL and domain-only formats
+let dbHost = process.env.DB_HOST || 'localhost';
+let dbPort = process.env.DB_PORT || 3306;
+
+// If DB_HOST contains a full connection string, extract just the domain
+if (dbHost.includes('://')) {
+  // Extract domain from URL like: mysql://user:pass@domain:port/db
+  const urlMatch = dbHost.match(/@([^:]+):(\d+)/);
+  if (urlMatch) {
+    dbHost = urlMatch[1];
+    dbPort = urlMatch[2];
+  }
+}
+
 const pool = mysql.createPool({
-  host: process.env.DB_HOST,
+  host: dbHost,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME
+  database: process.env.DB_NAME,
+  port: parseInt(dbPort),
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 });
 
 // Password Validation Helper

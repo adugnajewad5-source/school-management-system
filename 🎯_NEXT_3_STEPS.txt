@@ -1,0 +1,80 @@
+═══════════════════════════════════════════════════════════════════════════════
+🎯 NEXT 3 STEPS - DO THIS NOW
+═══════════════════════════════════════════════════════════════════════════════
+
+You're in Railway. Here's exactly what to do next:
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 1: GET YOUR PUBLIC DOMAIN (1 MINUTE)
+═══════════════════════════════════════════════════════════════════════════════
+
+You're in Railway MySQL database.
+
+Look at the tabs at the top:
+  Deployments | Database | Backups | Variables | Metrics | Settings
+
+Click: Variables
+
+Find: RAILWAY_TCP_PROXY_DOMAIN
+
+Copy the value (e.g., gateway.railway.app)
+
+Write it down: ___________________________
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 2: GO TO RENDER (5 MINUTES)
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Open new tab
+2. Go to: https://dashboard.render.com
+3. Click: school-management-backend-gnav
+4. Click: Environment
+5. Find: DB_HOST
+6. Change it from: ${{RAILWAY_PRIVATE_DOMAIN}}
+7. Change it to: [YOUR_PUBLIC_DOMAIN]
+   (e.g., gateway.railway.app)
+8. Click: Save
+9. Click: Redeploy
+10. Wait 2-3 minutes
+11. Check Logs - should see: "Connected to MySQL database"
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 3: GO TO VERCEL (2 MINUTES)
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Open new tab
+2. Go to: https://vercel.com/dashboard
+3. Click: school-management-system
+4. Click: Settings
+5. Click: Environment Variables
+6. Add:
+   Name: VITE_API_URL
+   Value: https://school-management-backend-gnav.onrender.com
+7. Click: Save
+8. Click: Redeploy
+9. Wait 2-3 minutes
+
+═══════════════════════════════════════════════════════════════════════════════
+DONE! TEST YOUR SYSTEM (2 MINUTES)
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Open: https://school-management-system.vercel.app
+2. Login: admin / Admin@123
+3. You should see the dashboard!
+
+═══════════════════════════════════════════════════════════════════════════════
+TOTAL TIME: ~10 MINUTES
+═══════════════════════════════════════════════════════════════════════════════
+
+Step 1: 1 min
+Step 2: 5 min
+Step 3: 2 min
+Test: 2 min
+
+═══════════════════════════════════════════════════════════════════════════════
+START NOW!
+═══════════════════════════════════════════════════════════════════════════════
+
+You're in Railway. Click "Variables" tab and copy your public domain!
+
+═══════════════════════════════════════════════════════════════════════════════

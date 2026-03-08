@@ -1,0 +1,91 @@
+═══════════════════════════════════════════════════════════════════════════════
+🎯 YOUR DEPLOYMENT URLS - SAVE THESE!
+═══════════════════════════════════════════════════════════════════════════════
+
+Here are YOUR specific URLs:
+
+═══════════════════════════════════════════════════════════════════════════════
+📍 YOUR URLS:
+═══════════════════════════════════════════════════════════════════════════════
+
+Frontend URL:
+  https://school-management-system-4hx2jvfn2.vercel.app
+
+Backend URL:
+  https://school-management-backend-gnav.onrender.com
+
+═══════════════════════════════════════════════════════════════════════════════
+🔧 WHAT TO DO NOW:
+═══════════════════════════════════════════════════════════════════════════════
+
+STEP 1: Get Railway Public Domain (1 min)
+────────────────────────────────────────────────────────────────────────────────
+1. Go to: https://railway.app/dashboard
+2. Click: MySQL database
+3. Click: Variables tab
+4. Find: RAILWAY_TCP_PROXY_DOMAIN
+5. Copy the value (e.g., gateway.railway.app)
+
+STEP 2: Set Render Environment Variables (5 min)
+────────────────────────────────────────────────────────────────────────────────
+1. Go to: https://dashboard.render.com
+2. Click: school-management-backend-gnav
+3. Click: Environment
+4. Add 8 variables:
+
+   DB_HOST = [YOUR_RAILWAY_PUBLIC_DOMAIN]
+   DB_USER = root
+   DB_PASSWORD = oGGYFZAYYVfJyMReLooWEFXCiWETNGep
+   DB_NAME = railway
+   DB_PORT = 3306
+   NODE_ENV = production
+   JWT_SECRET = your_super_secret_jwt_key_123_change_in_production
+   FRONTEND_URL = https://school-management-system-4hx2jvfn2.vercel.app
+
+5. Click: Redeploy
+6. Wait 2-3 minutes
+7. Check Logs - should see: "Connected to MySQL database"
+
+STEP 3: Set Vercel Environment Variable (2 min)
+────────────────────────────────────────────────────────────────────────────────
+1. Go to: https://vercel.com/dashboard
+2. Click: school-management-system
+3. Click: Settings → Environment Variables
+4. Add:
+   Name: VITE_API_URL
+   Value: https://school-management-backend-gnav.onrender.com
+5. Click: Save and Redeploy
+6. Wait 2-3 minutes
+
+STEP 4: Test (2 min)
+────────────────────────────────────────────────────────────────────────────────
+1. Open: https://school-management-system-4hx2jvfn2.vercel.app
+2. Login: admin / Admin@123
+3. Done! ✅
+
+═══════════════════════════════════════════════════════════════════════════════
+TOTAL TIME: ~12 MINUTES
+═══════════════════════════════════════════════════════════════════════════════
+
+Get domain: 1 min
+Set Render: 5 min
+Set Vercel: 2 min
+Test: 2 min
+Wait times: 2 min
+
+═══════════════════════════════════════════════════════════════════════════════
+IMPORTANT NOTES:
+═══════════════════════════════════════════════════════════════════════════════
+
+✅ Your frontend URL is: school-management-system-4hx2jvfn2.vercel.app
+✅ Your backend URL is: school-management-backend-gnav.onrender.com
+✅ Use your Railway public domain for DB_HOST
+✅ Use your frontend URL in FRONTEND_URL variable
+
+═══════════════════════════════════════════════════════════════════════════════
+NEXT STEP:
+═══════════════════════════════════════════════════════════════════════════════
+
+Go to Railway and get your public domain!
+
+═══════════════════════════════════════════════════════════════════════════════
