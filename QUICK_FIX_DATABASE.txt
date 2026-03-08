@@ -1,0 +1,94 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                                                                            ║
+║                    QUICK FIX - DATABASE CONNECTION                        ║
+║                                                                            ║
+║  PlanetScale not working? Try these quick solutions.                      ║
+║                                                                            ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+OPTION 1: USE LOCAL MYSQL (EASIEST)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+If you have MySQL installed locally:
+
+1. Open Command Prompt
+2. Type: mysql -u root -p
+3. Press Enter
+4. Enter your MySQL password (or just press Enter)
+5. Type: CREATE DATABASE school_management;
+6. Press Enter
+7. Type: USE school_management;
+8. Press Enter
+
+Then set these on Render:
+  DB_HOST=localhost
+  DB_USER=root
+  DB_PASSWORD=(your MySQL password)
+  DB_NAME=school_management
+  NODE_ENV=production
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+OPTION 2: INSTALL XAMPP (EASIEST IF NO MYSQL)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Download: https://www.apachefriends.org/download.html
+2. Install XAMPP
+3. Start XAMPP Control Panel
+4. Click "Start" next to MySQL
+5. Open: http://localhost/phpmyadmin
+6. Create database: school_management
+7. Import schema from: database/schema.sql
+
+Then set these on Render:
+  DB_HOST=localhost
+  DB_USER=root
+  DB_PASSWORD=(empty)
+  DB_NAME=school_management
+  NODE_ENV=production
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+OPTION 3: WAIT FOR PLANETSCALE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+If PlanetScale is just down temporarily:
+
+1. Wait 30 minutes
+2. Try: https://app.planetscale.com again
+3. If it works, get credentials
+4. Set on Render
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+OPTION 4: USE RAILWAY INSTEAD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Railway is similar to PlanetScale:
+
+1. Go to: https://railway.app
+2. Sign up (free)
+3. Create MySQL database
+4. Get connection credentials
+5. Set on Render
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+HOW TO SET ON RENDER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Go to: https://dashboard.render.com
+2. Click: school-management-backend-gnav
+3. Click: "Environment" tab
+4. Add these variables:
+   - DB_HOST = (your database host)
+   - DB_USER = (your database user)
+   - DB_PASSWORD = (your database password)
+   - DB_NAME = school_management
+   - NODE_ENV = production
+5. Click: "Redeploy"
+6. Wait 2-3 minutes
+7. Check logs for: "Connected to MySQL database"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+RECOMMENDED: Use XAMPP (Option 2) - it's the easiest!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
