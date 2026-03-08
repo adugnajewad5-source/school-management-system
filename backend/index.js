@@ -54,7 +54,7 @@ if (dbHost && dbHost.includes('aws.connect.psdb.cloud')) {
 // Use connection pool instead of single connection
 const pool = mysql.createPool(dbConfig);
 
-// Test the connection
+// Test the connection and run migrations
 pool.getConnection((err, connection) => {
   if (err) {
     console.error('Error connecting to MySQL:', err);
@@ -72,6 +72,27 @@ pool.getConnection((err, connection) => {
   if (connection) {
     connection.release();
     console.log('Connected to MySQL database');
+    
+    // Run migrations on startup
+    console.log('Running database migrations...');
+    const { spawn } = require('child_process');
+    const migration = spawn('node', ['run-railway-migration.js'], { cwd: __dirname });
+    
+    migration.stdout.on('data', (data) => {
+      console.log(`[Migration] ${data}`);
+    });
+    
+    migration.stderr.on('data', (data) => {
+      console.error(`[Migration Error] ${data}`);
+    });
+    
+    migration.on('close', (code) => {
+      if (code === 0) {
+        console.log('✓ Database migrations completed successfully');
+      } else {
+        console.warn('⚠ Database migrations completed with warnings');
+      }
+    });
   }
 });
 
