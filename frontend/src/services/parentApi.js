@@ -4,7 +4,7 @@
  * Includes JWT token management and error handling
  */
 
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://school-management-backend-gnav.onrender.com/api';
 
 /**
  * Get JWT token from localStorage

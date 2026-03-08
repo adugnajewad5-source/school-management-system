@@ -1,0 +1,64 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                    COPY-PASTE GIT COMMANDS                                ║
+║                                                                            ║
+║  Open PowerShell or CMD and copy-paste these commands one by one          ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+COMMAND 1: Add all changes
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+git add .
+
+(Press Enter)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+COMMAND 2: Commit changes
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+git commit -m "Fix SSL/TLS for PlanetScale database connection"
+
+(Press Enter)
+
+Expected output: 
+  X files changed, Y insertions(+), Z deletions(-)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+COMMAND 3: Push to GitHub
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+git push origin main
+
+(Press Enter)
+
+Expected output:
+  Enumerating objects: X, done.
+  Counting objects: 100% (X/X), done.
+  Delta compression using up to X threads
+  Compressing objects: 100% (X/X), done.
+  Writing objects: 100% (X/X), X bytes | X bytes/s, done.
+  Total X (delta X), reused 0 (delta 0), pack-reused 0
+  To https://github.com/adugnajewad5-source/school-management-system.git
+     XXXXXXX..XXXXXXX  main -> main
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+VERIFY: Check if push was successful
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+git log --oneline -3
+
+(Press Enter)
+
+Should show your recent commits including "Fix SSL/TLS for PlanetScale"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+After these commands complete successfully:
+
+1. Go to: https://dashboard.render.com
+2. Click: school-management-backend-gnav
+3. Click: "Redeploy" button
+4. Wait 2-3 minutes
+5. Check logs for: "Connected to MySQL database"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

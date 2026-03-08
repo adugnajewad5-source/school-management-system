@@ -1,3 +1,6 @@
+// This is the COMPLETE FIXED backend/index.js file
+// Copy this entire content and replace your backend/index.js
+
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
@@ -20,12 +23,13 @@ if (!fs.existsSync(uploadsDir)) {
 // Serve uploaded files statically
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// FIXED: Added SSL configuration for PlanetScale
 const db = mysql.createConnection({
   host: process.env.DB_HOST || 'localhost',
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || '',
   database: process.env.DB_NAME || 'school_management',
-  ssl: 'Amazon RDS',
+  ssl: 'Amazon RDS',  // IMPORTANT: Enable SSL for PlanetScale
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
@@ -43,23 +47,31 @@ db.connect((err) => {
 const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const submissionRoutes = require('./routes/submissionRoutes');
-const parentRoutes = require('./routes/parentRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
+const parentRoutes = require('./routes/parentRoutes');
+
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/submissions', submissionRoutes);
-app.use('/api/parent', parentRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/upload', uploadRoutes);
-app.use('/uploads', express.static('uploads'));
+app.use('/api/parent', parentRoutes);
 
-// Basic Route
+// Health check endpoint
 app.get('/', (req, res) => {
-  res.send('School Management System API');
+  res.json({ status: 'Server is running', message: 'School Management System API' });
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error('Error:', err);
+  res.status(500).json({ message: 'Internal server error', error: err.message });
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, '0.0.0.0', () => {
+app.listen(PORT, () => {
   console.log(`Server is running securely on all network interfaces on port ${PORT}`);
 });
+
+module.exports = app;

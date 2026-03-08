@@ -50,7 +50,8 @@ const RegisterPage = () => {
     setSuccess('');
 
     try {
-      const response = await fetch(`http://${window.location.hostname}:5000/api/auth/register`, {
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://school-management-backend-gnav.onrender.com';
+      const response = await fetch(`${apiUrl}/api/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

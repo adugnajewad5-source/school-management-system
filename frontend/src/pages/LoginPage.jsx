@@ -13,7 +13,8 @@ const LoginPage = ({ onLogin }) => {
     setError('');
 
     try {
-      const response = await fetch(`http://${window.location.hostname}:5000/api/auth/login`, {
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://school-management-backend-gnav.onrender.com';
+      const response = await fetch(`${apiUrl}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })

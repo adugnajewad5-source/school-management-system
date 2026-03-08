@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const upload = require('../middleware/uploadMiddleware');
-const cloudinary = require('../config/cloudinary');
+const fs = require('fs');
+const path = require('path');
 
-// Upload file
+// Upload file (simple local storage)
 router.post('/upload', upload.single('file'), (req, res) => {
   try {
     if (!req.file) {
@@ -12,7 +13,7 @@ router.post('/upload', upload.single('file'), (req, res) => {
 
     res.status(201).json({
       message: 'File uploaded successfully',
-      url: req.file.path,
+      url: `/uploads/${req.file.filename}`,
       publicId: req.file.filename,
       size: req.file.size,
       name: req.file.originalname,
@@ -24,7 +25,7 @@ router.post('/upload', upload.single('file'), (req, res) => {
   }
 });
 
-// Delete file
+// Delete file (simple local storage)
 router.delete('/delete/:publicId', async (req, res) => {
   try {
     const { publicId } = req.params;
@@ -33,9 +34,10 @@ router.delete('/delete/:publicId', async (req, res) => {
       return res.status(400).json({ message: 'Public ID required' });
     }
 
-    const result = await cloudinary.uploader.destroy(publicId);
+    const filePath = path.join(__dirname, '../uploads', publicId);
     
-    if (result.result === 'ok') {
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
       res.json({ message: 'File deleted successfully' });
     } else {
       res.status(404).json({ message: 'File not found' });
@@ -46,7 +48,7 @@ router.delete('/delete/:publicId', async (req, res) => {
   }
 });
 
-// Get file info
+// Get file info (simple local storage)
 router.get('/info/:publicId', async (req, res) => {
   try {
     const { publicId } = req.params;
@@ -55,23 +57,47 @@ router.get('/info/:publicId', async (req, res) => {
       return res.status(400).json({ message: 'Public ID required' });
     }
 
-    const result = await cloudinary.api.resource(publicId);
-    res.json(result);
+    const filePath = path.join(__dirname, '../uploads', publicId);
+    
+    if (fs.existsSync(filePath)) {
+      const stats = fs.statSync(filePath);
+      res.json({
+        public_id: publicId,
+        bytes: stats.size,
+        created_at: stats.birthtime,
+        url: `/uploads/${publicId}`
+      });
+    } else {
+      res.status(404).json({ message: 'File not found' });
+    }
   } catch (err) {
     console.error('Info error:', err);
     res.status(500).json({ message: `Error: ${err.message}` });
   }
 });
 
-// List all files
+// List all files (simple local storage)
 router.get('/list', async (req, res) => {
   try {
-    const result = await cloudinary.api.resources({
-      type: 'upload',
-      prefix: 'school-management',
-      max_results: 100
+    const uploadsDir = path.join(__dirname, '../uploads');
+    
+    if (!fs.existsSync(uploadsDir)) {
+      return res.json({ resources: [] });
+    }
+
+    const files = fs.readdirSync(uploadsDir);
+    const resources = files.map(file => {
+      const filePath = path.join(uploadsDir, file);
+      const stats = fs.statSync(filePath);
+      return {
+        public_id: file,
+        bytes: stats.size,
+        created_at: stats.birthtime,
+        url: `/uploads/${file}`
+      };
     });
-    res.json(result);
+
+    res.json({ resources });
   } catch (err) {
     console.error('List error:', err);
     res.status(500).json({ message: `Error: ${err.message}` });
