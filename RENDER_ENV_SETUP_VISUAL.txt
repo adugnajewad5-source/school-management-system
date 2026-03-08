@@ -1,0 +1,201 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                                                                            ║
+║              SET ENVIRONMENT VARIABLES ON RENDER - VISUAL GUIDE            ║
+║                                                                            ║
+║  Your backend needs database credentials to connect to PlanetScale        ║
+║                                                                            ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 1: GET PLANETSCALE CREDENTIALS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Open: https://app.planetscale.com
+   ↓
+2. Login with your account
+   ↓
+3. Click your database: "school-management"
+   ↓
+4. Click: "Connect" button (top right)
+   ↓
+5. Select: "Node.js" from dropdown
+   ↓
+6. You'll see connection string:
+
+   const connection = mysql.createConnection({
+     host: 'aws.connect.psdb.cloud',
+     user: 'xxxxxxxxxxxxxxxx',
+     password: 'pscale_pw_xxxxxxxxxxxxxxxx',
+     database: 'school-management'
+   });
+
+   ↓
+7. Copy these values:
+   - DB_HOST = aws.connect.psdb.cloud
+   - DB_USER = xxxxxxxxxxxxxxxx
+   - DB_PASSWORD = pscale_pw_xxxxxxxxxxxxxxxx
+   - DB_NAME = school-management
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 2: GO TO RENDER DASHBOARD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Open: https://dashboard.render.com
+   ↓
+2. Login with your account
+   ↓
+3. You see your services listed
+   ↓
+4. Click: "school-management-backend-gnav"
+   ↓
+5. You're now on the service page
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 3: CLICK ENVIRONMENT TAB
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Look at the left sidebar
+   ↓
+2. You see tabs: Overview, Logs, Events, Environment, etc.
+   ↓
+3. Click: "Environment" tab
+   ↓
+4. You see existing environment variables
+   ↓
+5. Look for: "Add Environment Variable" button
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 4: ADD DATABASE VARIABLES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+For each variable below, repeat these steps:
+
+1. Click: "Add Environment Variable" button
+   ↓
+2. Enter: Variable name (e.g., "DB_HOST")
+   ↓
+3. Enter: Variable value (e.g., "aws.connect.psdb.cloud")
+   ↓
+4. Click: "Save" button
+   ↓
+5. Variable is added to the list
+
+ADD THESE VARIABLES:
+
+Variable 1:
+  Name: DB_HOST
+  Value: aws.connect.psdb.cloud
+
+Variable 2:
+  Name: DB_USER
+  Value: (your PlanetScale username - from Step 1)
+
+Variable 3:
+  Name: DB_PASSWORD
+  Value: (your PlanetScale password - from Step 1)
+
+Variable 4:
+  Name: DB_NAME
+  Value: school-management
+
+Variable 5:
+  Name: DB_PORT
+  Value: 3306
+
+Variable 6:
+  Name: NODE_ENV
+  Value: production
+
+Variable 7:
+  Name: JWT_SECRET
+  Value: your_super_secret_jwt_key_123_change_in_production
+
+Variable 8:
+  Name: FRONTEND_URL
+  Value: https://school-management-system.vercel.app
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 5: REDEPLOY BACKEND
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. After adding all variables
+   ↓
+2. Look for: "Redeploy" button (top right)
+   ↓
+3. Click: "Redeploy" button
+   ↓
+4. A dialog appears asking to confirm
+   ↓
+5. Click: "Redeploy" in the dialog
+   ↓
+6. Deployment starts (you see progress)
+   ↓
+7. Wait: 2-3 minutes for deployment to complete
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 6: CHECK LOGS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Still on Render dashboard
+   ↓
+2. Click: "Logs" tab
+   ↓
+3. You see deployment logs scrolling
+   ↓
+4. Look for one of these messages:
+
+   ✅ SUCCESS (you want to see this):
+      "Connected to MySQL database"
+
+   ❌ FAILURE (if you see this):
+      "Error connecting to MySQL"
+      "Access denied for user"
+
+   ↓
+5. If you see "Connected to MySQL database", you're done! ✅
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STEP 7: TEST THE SYSTEM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Open: https://school-management-system.vercel.app
+   ↓
+2. Login with:
+   Username: admin
+   Password: Admin@123
+   ↓
+3. You should see admin dashboard
+   ↓
+✅ System is working!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TROUBLESHOOTING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+If you see "Error connecting to MySQL":
+
+1. Check DB_USER is correct
+   - Go back to PlanetScale
+   - Verify the username matches
+
+2. Check DB_PASSWORD is correct
+   - Go back to PlanetScale
+   - Verify the password matches
+
+3. Check DB_HOST is correct
+   - Should be: aws.connect.psdb.cloud
+   - NOT localhost
+
+4. Try redeploy again
+   - Click "Redeploy" button
+   - Wait 2-3 minutes
+
+5. Check PlanetScale network access
+   - Go to: https://app.planetscale.com
+   - Click your database
+   - Click: Settings → Connections
+   - Verify your IP is allowed (or allow all)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+That's it! Set the environment variables and your database will connect! 🚀

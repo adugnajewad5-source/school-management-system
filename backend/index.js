@@ -20,16 +20,23 @@ if (!fs.existsSync(uploadsDir)) {
 // Serve uploaded files statically
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-const db = mysql.createConnection({
+// Database configuration with proper SSL/TLS for PlanetScale
+const dbConfig = {
   host: process.env.DB_HOST || 'localhost',
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || '',
   database: process.env.DB_NAME || 'school_management',
-  ssl: 'Amazon RDS',
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
-});
+};
+
+// Add SSL configuration only for production (PlanetScale)
+if (process.env.NODE_ENV === 'production' || process.env.DB_HOST === 'aws.connect.psdb.cloud') {
+  dbConfig.ssl = 'Amazon RDS';
+}
+
+const db = mysql.createConnection(dbConfig);
 
 db.connect((err) => {
   if (err) {
