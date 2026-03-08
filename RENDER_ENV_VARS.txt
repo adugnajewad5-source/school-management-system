@@ -1,0 +1,7 @@
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=school_management
+NODE_ENV=production
+JWT_SECRET=your_super_secret_jwt_key_123_change_in_production
+FRONTEND_URL=https://school-management-system.vercel.app
