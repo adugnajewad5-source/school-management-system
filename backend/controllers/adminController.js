@@ -4,11 +4,29 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
+// Parse database host - handle both full URL and domain-only formats
+let dbHost = process.env.DB_HOST || 'localhost';
+let dbPort = process.env.DB_PORT || 3306;
+
+// If DB_HOST contains a full connection string, extract just the domain
+if (dbHost.includes('://')) {
+  // Extract domain from URL like: mysql://user:pass@domain:port/db
+  const urlMatch = dbHost.match(/@([^:]+):(\d+)/);
+  if (urlMatch) {
+    dbHost = urlMatch[1];
+    dbPort = urlMatch[2];
+  }
+}
+
 const pool = mysql.createPool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME
+  host: dbHost,
+  user: process.env.DB_USER || 'root',
+  password: process.env.DB_PASSWORD || '',
+  database: process.env.DB_NAME || 'railway',
+  port: parseInt(dbPort),
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 });
 
 // ==================== STUDENTS ====================
@@ -31,7 +49,7 @@ exports.createPreRegisteredStudent = async (req, res) => {
     
     // Email will be provided by student during registration
     await pool.execute(
-      'INSERT INTO students (studentId, name, class, age, parent_phone, temp_password, is_registered) VALUES (?, ?, ?, ?, ?, ?, FALSE)',
+      'INSERT INTO students (student_id, name, class, age, parent_phone, temp_password, is_registered) VALUES (?, ?, ?, ?, ?, ?, FALSE)',
       [studentId, name, studentClass || 'Not Assigned', age || null, parent_phone || null, hashedTempPassword]
     );
     
@@ -52,7 +70,7 @@ exports.getStudents = async (req, res) => {
     const [students] = await pool.execute(`
       SELECT s.*, u.username, u.email 
       FROM students s 
-      LEFT JOIN users u ON s.userId = u.id
+      LEFT JOIN users u ON s.user_id = u.id
     `);
     res.json(students);
   } catch (err) {
@@ -95,7 +113,7 @@ exports.getTeachers = async (req, res) => {
     const [teachers] = await pool.execute(`
       SELECT t.*, u.username, u.email 
       FROM teachers t 
-      JOIN users u ON t.userId = u.id
+      JOIN users u ON t.user_id = u.id
     `);
     res.json(teachers);
   } catch (err) {
@@ -124,9 +142,9 @@ exports.updateTeacher = async (req, res) => {
 exports.getPayments = async (req, res) => {
   try {
     const [payments] = await pool.execute(`
-      SELECT p.*, s.name as student_name, s.studentId as student_ref 
+      SELECT p.*, s.name as student_name, s.student_id as student_ref 
       FROM payments p 
-      JOIN students s ON p.studentId = s.id
+      JOIN students s ON p.student_id = s.id
       ORDER BY p.id DESC
     `);
     res.json(payments);
@@ -141,24 +159,16 @@ exports.addPayment = async (req, res) => {
   try {
     let dbStudentId = student_id;
     if (typeof student_id === 'string' && student_id.startsWith('STU-')) {
-      const [stu] = await pool.execute('SELECT id FROM students WHERE studentId = ?', [student_id]);
+      const [stu] = await pool.execute('SELECT id FROM students WHERE student_id = ?', [student_id]);
       if (stu.length === 0) return res.status(404).json({ message: 'Student not found' });
       dbStudentId = stu[0].id;
     }
 
-    // Try different column names for date
-    try {
-      await pool.execute(
-        'INSERT INTO payments (studentId, amount, paymentDate) VALUES (?, ?, ?)',
-        [dbStudentId, amount, date]
-      );
-    } catch (err) {
-      // If paymentDate doesn't work, try 'date'
-      await pool.execute(
-        'INSERT INTO payments (studentId, amount, date) VALUES (?, ?, ?)',
-        [dbStudentId, amount, date]
-      );
-    }
+    // Insert payment
+    await pool.execute(
+      'INSERT INTO payments (student_id, amount, date) VALUES (?, ?, ?)',
+      [dbStudentId, amount, date]
+    );
     
     res.json({ message: 'Payment recorded successfully' });
   } catch (err) {
@@ -171,18 +181,10 @@ exports.updatePayment = async (req, res) => {
   const { id } = req.params;
   const { amount, date } = req.body;
   try {
-    // Try paymentDate first, then date
-    try {
-      await pool.execute(
-        'UPDATE payments SET amount = ?, paymentDate = ? WHERE id = ?',
-        [amount, date, id]
-      );
-    } catch (err) {
-      await pool.execute(
-        'UPDATE payments SET amount = ?, date = ? WHERE id = ?',
-        [amount, date, id]
-      );
-    }
+    await pool.execute(
+      'UPDATE payments SET amount = ?, date = ? WHERE id = ?',
+      [amount, date, id]
+    );
     res.json({ message: 'Payment updated successfully' });
   } catch (err) {
     console.error('updatePayment error:', err);
@@ -227,7 +229,7 @@ exports.getReports = async (req, res) => {
 exports.getResults = async (req, res) => {
   try {
     const [results] = await pool.execute(`
-      SELECT r.*, s.studentId, s.name as student_name
+      SELECT r.*, s.student_id, s.name as student_name
       FROM results r
       JOIN students s ON r.student_id = s.id
       ORDER BY r.created_at DESC
@@ -246,7 +248,7 @@ exports.getStudentResults = async (req, res) => {
     
     // Find student by studentId
     const [students] = await pool.execute(
-      'SELECT id FROM students WHERE studentId = ?',
+      'SELECT id FROM students WHERE student_id = ?',
       [studentId]
     );
     
@@ -258,7 +260,7 @@ exports.getStudentResults = async (req, res) => {
     
     // Get results for this student
     const [results] = await pool.execute(`
-      SELECT r.*, s.studentId, s.name as student_name
+      SELECT r.*, s.student_id, s.name as student_name
       FROM results r
       JOIN students s ON r.student_id = s.id
       WHERE r.student_id = ?
@@ -292,7 +294,7 @@ exports.addResult = async (req, res) => {
 
     // Find student by their unique studentId (e.g., "STU-001")
     const [students] = await pool.execute(
-      'SELECT id, name FROM students WHERE studentId = ?',
+      'SELECT id, name FROM students WHERE student_id = ?',
       [studentId]
     );
     

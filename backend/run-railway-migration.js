@@ -1,5 +1,4 @@
 const mysql = require('mysql2/promise');
-const fs = require('fs');
 const path = require('path');
 
 async function runMigration() {
@@ -33,14 +32,68 @@ async function runMigration() {
     connection = await mysql.createConnection(dbConfig);
     console.log('✓ Connected to database');
 
-    // Read and execute schema
-    const schemaPath = path.join(__dirname, '../database/schema.sql');
-    const schema = fs.readFileSync(schemaPath, 'utf8');
-
-    const statements = schema
-      .split(';')
-      .map(stmt => stmt.trim())
-      .filter(stmt => stmt.length > 0 && !stmt.startsWith('--'));
+    // Execute schema directly (embedded SQL)
+    const statements = [
+      `CREATE TABLE IF NOT EXISTS users (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        username VARCHAR(255) NOT NULL UNIQUE,
+        email VARCHAR(255) NOT NULL UNIQUE,
+        password_hash VARCHAR(255) NOT NULL,
+        role ENUM('student', 'teacher', 'admin', 'parent') NOT NULL,
+        must_change_password BOOLEAN DEFAULT FALSE,
+        failed_attempts INT DEFAULT 0,
+        locked_at TIMESTAMP NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )`,
+      
+      `CREATE TABLE IF NOT EXISTS students (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        student_id VARCHAR(20) NOT NULL UNIQUE,
+        user_id INT,
+        name VARCHAR(255) NOT NULL,
+        class VARCHAR(50),
+        age INT,
+        parent_phone VARCHAR(20),
+        temp_password VARCHAR(255),
+        is_registered BOOLEAN DEFAULT FALSE,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+      )`,
+      
+      `CREATE TABLE IF NOT EXISTS teachers (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT,
+        name VARCHAR(255) NOT NULL,
+        subject VARCHAR(100),
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+      )`,
+      
+      `CREATE TABLE IF NOT EXISTS payments (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        student_id INT,
+        amount DECIMAL(10, 2) NOT NULL,
+        date DATE NOT NULL,
+        FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE
+      )`,
+      
+      `CREATE TABLE IF NOT EXISTS results (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        student_id INT,
+        subject VARCHAR(100) NOT NULL,
+        marks INT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
+        UNIQUE KEY unique_student_subject (student_id, subject)
+      )`,
+      
+      `CREATE TABLE IF NOT EXISTS attendance (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        student_id INT,
+        date DATE NOT NULL,
+        status ENUM('Present', 'Absent') NOT NULL,
+        FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE
+      )`
+    ];
 
     console.log(`\nExecuting ${statements.length} SQL statements...\n`);
 
