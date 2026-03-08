@@ -1,0 +1,134 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                                                                            ║
+║              PLANETSCALE NOT WORKING? HERE ARE YOUR OPTIONS               ║
+║                                                                            ║
+║  I've created guides for 4 different solutions. Pick one and follow it.   ║
+║                                                                            ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+QUICK SUMMARY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Your backend needs database credentials to connect. PlanetScale website might
+be down or not accessible. You have 4 options:
+
+1. ⏳ Wait for PlanetScale to come back online
+2. 💻 Use local MySQL on your computer (EASIEST)
+3. 🚂 Use Railway instead of PlanetScale
+4. 📖 Get PlanetScale credentials if you already have them
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+OPTION 1: USE LOCAL MYSQL (RECOMMENDED - EASIEST)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Read: USE_LOCAL_MYSQL_INSTEAD.md
+
+This is the easiest option. You can use MySQL on your computer instead of
+PlanetScale. It's free and works great for testing.
+
+Steps:
+1. Install XAMPP (includes MySQL)
+2. Create database: school_management
+3. Import schema
+4. Set credentials on Render
+5. Redeploy
+
+Time: 15 minutes
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+OPTION 2: GET PLANETSCALE CREDENTIALS (IF YOU HAVE ACCOUNT)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Read: GET_PLANETSCALE_CREDENTIALS_VISUAL.md
+
+If you already have a PlanetScale account and database, this guide shows you
+how to get the credentials even if the website is slow.
+
+Steps:
+1. Try accessing PlanetScale again
+2. Navigate to your database
+3. Click "Connect"
+4. Copy credentials
+5. Set on Render
+
+Time: 5 minutes
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+OPTION 3: USE RAILWAY INSTEAD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Railway is similar to PlanetScale but might be more reliable:
+
+Steps:
+1. Go to: https://railway.app
+2. Sign up (free)
+3. Create MySQL database
+4. Get connection credentials
+5. Set on Render
+6. Redeploy
+
+Time: 20 minutes
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+OPTION 4: WAIT FOR PLANETSCALE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+If PlanetScale is just temporarily down:
+
+Steps:
+1. Wait 30 minutes
+2. Try: https://app.planetscale.com again
+3. If it works, get credentials
+4. Set on Render
+5. Redeploy
+
+Time: 30+ minutes
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+QUICK FIX GUIDE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Read: QUICK_FIX_DATABASE.txt
+
+This file has quick commands for all options. Just copy and paste!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+MY RECOMMENDATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+👉 Use LOCAL MYSQL (Option 1)
+
+Why?
+✅ Easiest to set up
+✅ Works immediately
+✅ No waiting for PlanetScale
+✅ Free
+✅ Perfect for testing
+
+Just follow: USE_LOCAL_MYSQL_INSTEAD.md
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+AFTER YOU GET CREDENTIALS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Once you have database credentials (from any option):
+
+1. Go to: https://dashboard.render.com
+2. Click: school-management-backend-gnav
+3. Click: "Environment" tab
+4. Add these variables:
+   - DB_HOST = (your database host)
+   - DB_USER = (your database user)
+   - DB_PASSWORD = (your database password)
+   - DB_NAME = school_management
+   - NODE_ENV = production
+5. Click: "Redeploy"
+6. Wait 2-3 minutes
+7. Check logs for: "Connected to MySQL database"
+8. Test login at: https://school-management-system.vercel.app
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Pick an option and follow the guide! You'll have your system working in
+15-30 minutes! 🚀

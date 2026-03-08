@@ -31,8 +31,8 @@ const dbConfig = {
   queueLimit: 0
 };
 
-// Add SSL configuration only for production (PlanetScale)
-if (process.env.NODE_ENV === 'production' || process.env.DB_HOST === 'aws.connect.psdb.cloud') {
+// Add SSL configuration only for PlanetScale
+if (process.env.DB_HOST && process.env.DB_HOST.includes('aws.connect.psdb.cloud')) {
   dbConfig.ssl = 'Amazon RDS';
 }
 
