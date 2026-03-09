@@ -87,13 +87,13 @@ exports.register = async (req, res) => {
 
       // 6. Link user to student record and mark as registered
       await pool.execute(
-        'UPDATE students SET userId = ?, is_registered = TRUE, temp_password = NULL WHERE id = ?',
+        'UPDATE students SET user_id = ?, is_registered = TRUE, temp_password = NULL WHERE id = ?',
         [userId, studentRecord.id]
       );
 
       return res.status(201).json({
         message: 'Student registered successfully',
-        studentId: studentRecord.studentId
+        studentId: studentRecord.student_id
       });
     }
 
