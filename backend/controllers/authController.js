@@ -205,10 +205,9 @@ exports.register = async (req, res) => {
     const userId = userResult.insertId;
 
     if (role === 'teacher') {
-      const teacherId = `TEA-${Math.floor(100000 + Math.random() * 900000)}`;
       await pool.execute(
-        'INSERT INTO teachers (teacherId, userId, name, subject, createdAt, updatedAt) VALUES (?, ?, ?, ?, NOW(), NOW())',
-        [teacherId, userId, name, subject || null]
+        'INSERT INTO teachers (user_id, name, subject) VALUES (?, ?, ?)',
+        [userId, name, subject || null]
       );
     }
 
