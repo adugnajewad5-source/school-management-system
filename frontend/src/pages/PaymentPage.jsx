@@ -16,7 +16,8 @@ const PaymentPage = () => {
 
   const fetchPayments = async () => {
     try {
-      const res = await fetch(`http://${window.location.hostname}:5000/api/admin/payments`);
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://school-management-backend-gnav.onrender.com';
+      const res = await fetch(`${apiUrl}/api/admin/payments`);
       const data = await res.json();
       setPayments(data);
     } catch (err) {
@@ -34,7 +35,8 @@ const PaymentPage = () => {
     }
 
     try {
-      const res = await fetch(`http://${window.location.hostname}:5000/api/admin/payments`, {
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://school-management-backend-gnav.onrender.com';
+      const res = await fetch(`${apiUrl}/api/admin/payments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -61,7 +63,8 @@ const PaymentPage = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this payment record?')) return;
     try {
-      await fetch(`http://${window.location.hostname}:5000/api/admin/payments/${id}`, {
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://school-management-backend-gnav.onrender.com';
+      await fetch(`${apiUrl}/api/admin/payments/${id}`, {
         method: 'DELETE'
       });
       fetchPayments();

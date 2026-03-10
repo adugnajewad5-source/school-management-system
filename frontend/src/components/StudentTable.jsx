@@ -19,7 +19,8 @@ const StudentTable = () => {
 
   const fetchStudents = async () => {
     try {
-      const res = await fetch(`http://${window.location.hostname}:5000/api/admin/students`);
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://school-management-backend-gnav.onrender.com';
+      const res = await fetch(`${apiUrl}/api/admin/students`);
       const data = await res.json();
       setStudents(data);
     } catch (err) {
@@ -32,7 +33,8 @@ const StudentTable = () => {
   const handleDelete = async (userId) => {
     if (!window.confirm('Are you sure you want to completely delete this student account?')) return;
     try {
-      await fetch(`http://${window.location.hostname}:5000/api/admin/students/${userId}`, {
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://school-management-backend-gnav.onrender.com';
+      await fetch(`${apiUrl}/api/admin/students/${userId}`, {
         method: 'DELETE'
       });
       fetchStudents();
@@ -53,7 +55,8 @@ const StudentTable = () => {
 
   const handleSave = async (id) => {
     try {
-      await fetch(`http://${window.location.hostname}:5000/api/admin/students/${id}`, {
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://school-management-backend-gnav.onrender.com';
+      await fetch(`${apiUrl}/api/admin/students/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(editFormData)

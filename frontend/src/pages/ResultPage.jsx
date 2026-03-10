@@ -23,12 +23,13 @@ const ResultPage = ({ user }) => {
   const fetchResults = async () => {
     try {
       let url;
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://school-management-backend-gnav.onrender.com';
       if (isStudent && user?.studentId) {
         // Students fetch only their own results
-        url = `http://${window.location.hostname}:5000/api/admin/results/student/${user.studentId}`;
+        url = `${apiUrl}/api/admin/results/student/${user.studentId}`;
       } else {
         // Teachers/admins fetch all results
-        url = `http://${window.location.hostname}:5000/api/admin/results`;
+        url = `${apiUrl}/api/admin/results`;
       }
       
       const response = await fetch(url);
@@ -72,10 +73,11 @@ const ResultPage = ({ user }) => {
 
   const handleFormSubmit = async (data) => {
     try {
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://school-management-backend-gnav.onrender.com';
       if (editingResult) {
         // Update existing result
         const response = await fetch(
-          `http://${window.location.hostname}:5000/api/admin/results/${editingResult.id}`,
+          `${apiUrl}/api/admin/results/${editingResult.id}`,
           {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
@@ -94,7 +96,7 @@ const ResultPage = ({ user }) => {
       } else {
         // Add new result or update existing - send studentId in STU-XXX format
         const response = await fetch(
-          `http://${window.location.hostname}:5000/api/admin/results`,
+          `${apiUrl}/api/admin/results`,
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

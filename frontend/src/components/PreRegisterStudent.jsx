@@ -20,7 +20,8 @@ const PreRegisterStudent = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://${window.location.hostname}:5000/api/admin/students/pre-register`, {
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://school-management-backend-gnav.onrender.com';
+      const response = await fetch(`${apiUrl}/api/admin/students/pre-register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

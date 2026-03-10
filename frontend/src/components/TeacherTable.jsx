@@ -21,7 +21,8 @@ const TeacherTable = () => {
 
   const fetchTeachers = async () => {
     try {
-      const res = await fetch(`http://${window.location.hostname}:5000/api/admin/teachers`);
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://school-management-backend-gnav.onrender.com';
+      const res = await fetch(`${apiUrl}/api/admin/teachers`);
       const data = await res.json();
       setTeachers(data);
     } catch (err) {
@@ -34,7 +35,8 @@ const TeacherTable = () => {
   const handleDelete = async (userId) => {
     if (!window.confirm('Are you sure you want to completely delete this teacher account?')) return;
     try {
-      await fetch(`http://${window.location.hostname}:5000/api/admin/teachers/${userId}`, {
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://school-management-backend-gnav.onrender.com';
+      await fetch(`${apiUrl}/api/admin/teachers/${userId}`, {
         method: 'DELETE'
       });
       setMessage({ text: 'Teacher deleted successfully', type: 'success' });
@@ -55,7 +57,8 @@ const TeacherTable = () => {
     }
 
     try {
-      const res = await fetch(`http://${window.location.hostname}:5000/api/auth/register`, {
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://school-management-backend-gnav.onrender.com';
+      const res = await fetch(`${apiUrl}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -100,7 +103,8 @@ const TeacherTable = () => {
 
   const handleSave = async (id) => {
     try {
-      await fetch(`http://${window.location.hostname}:5000/api/admin/teachers/${id}`, {
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://school-management-backend-gnav.onrender.com';
+      await fetch(`${apiUrl}/api/admin/teachers/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(editFormData)

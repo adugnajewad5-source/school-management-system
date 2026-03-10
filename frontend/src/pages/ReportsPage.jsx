@@ -13,26 +13,27 @@ const ReportsPage = () => {
   const [payments, setPayments] = useState([]);
 
   useEffect(() => {
+    const apiUrl = import.meta.env.VITE_API_URL || 'https://school-management-backend-gnav.onrender.com';
     // Fetch stats
-    fetch(`http://${window.location.hostname}:5000/api/admin/reports`)
+    fetch(`${apiUrl}/api/admin/reports`)
       .then(res => res.json())
       .then(data => setStats(data))
       .catch(console.error);
 
     // Fetch students for CSV export
-    fetch(`http://${window.location.hostname}:5000/api/admin/students`)
+    fetch(`${apiUrl}/api/admin/students`)
       .then(res => res.json())
       .then(data => setStudents(data))
       .catch(console.error);
 
     // Fetch teachers for CSV export
-    fetch(`http://${window.location.hostname}:5000/api/admin/teachers`)
+    fetch(`${apiUrl}/api/admin/teachers`)
       .then(res => res.json())
       .then(data => setTeachers(data))
       .catch(console.error);
 
     // Fetch payments for CSV export
-    fetch(`http://${window.location.hostname}:5000/api/admin/payments`)
+    fetch(`${apiUrl}/api/admin/payments`)
       .then(res => res.json())
       .then(data => setPayments(data))
       .catch(console.error);
