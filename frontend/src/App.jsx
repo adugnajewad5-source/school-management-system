@@ -64,7 +64,7 @@ function App() {
       <main style={{
         marginLeft: user ? '300px' : '0',
         width: '100%',
-        padding: '40px',
+        padding: user ? '40px' : '0',
         minHeight: '100vh',
         transition: 'margin 0.3s'
       }}>
