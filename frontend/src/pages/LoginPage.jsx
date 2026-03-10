@@ -7,20 +7,32 @@ const LoginPage = ({ onLogin }) => {
   const navigate = useNavigate();
 
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
+    setLoading(true);
+
+    if (!username || !password) {
+      setError('Please enter both username and password');
+      setLoading(false);
+      return;
+    }
 
     try {
       const apiUrl = import.meta.env.VITE_API_URL || 'https://school-management-backend-gnav.onrender.com';
+      console.log('Attempting login with API URL:', apiUrl);
+      
       const response = await fetch(`${apiUrl}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
       });
 
+      console.log('Response status:', response.status);
       const data = await response.json();
+      console.log('Response data:', data);
 
       if (!response.ok) {
         throw new Error(data.message || 'Login failed');
@@ -30,20 +42,30 @@ const LoginPage = ({ onLogin }) => {
       localStorage.setItem('token', data.token);
 
       const user = data.user;
+      console.log('Login successful, user:', user);
 
       if (user.must_change_password) {
+        onLogin(user);
         navigate('/change-password');
       } else {
         onLogin(user);
         // Redirect based on role
-        if (user.role === 'admin') navigate('/admin');
-        else if (user.role === 'teacher') navigate('/teacher');
-        else if (user.role === 'student') navigate('/student');
-        else if (user.role === 'parent') navigate('/parent');
-        else navigate('/');
+        if (user.role === 'admin') {
+          navigate('/admin');
+        } else if (user.role === 'teacher') {
+          navigate('/teacher');
+        } else if (user.role === 'student') {
+          navigate('/student');
+        } else if (user.role === 'parent') {
+          navigate('/parent');
+        } else {
+          navigate('/');
+        }
       }
     } catch (err) {
-      setError(err.message);
+      console.error('Login error:', err);
+      setError(err.message || 'Login failed. Please try again.');
+      setLoading(false);
     }
   };
 
@@ -90,8 +112,8 @@ const LoginPage = ({ onLogin }) => {
             />
           </div>
 
-          <button type="submit" className="btn-primary" style={{ width: '100%', padding: '14px' }}>
-            Sign In
+          <button type="submit" className="btn-primary" style={{ width: '100%', padding: '14px' }} disabled={loading}>
+            {loading ? 'Signing In...' : 'Sign In'}
           </button>
         </form>
 
