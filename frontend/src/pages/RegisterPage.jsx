@@ -89,11 +89,12 @@ const RegisterPage = () => {
       alignItems: 'center',
       justifyContent: 'center',
       background: 'url("https://images.unsplash.com/photo-1546410531-bb4caa6b424d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80") center/cover no-repeat',
-      padding: '40px 0'
+      padding: '20px'
     }}>
       <div className="glass" style={{
         padding: '30px',
-        width: '550px',
+        width: '100%',
+        maxWidth: '550px',
         textAlign: 'center'
       }}>
         <h2 style={{ marginBottom: '5px' }}>Create Account</h2>
