@@ -49,21 +49,18 @@ const LoginPage = ({ onLogin }) => {
 
   return (
     <div style={{
-      height: '100vh',
+      minHeight: '100vh',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       background: 'url("https://images.unsplash.com/photo-1523050853063-8802a83557e9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80") center/cover no-repeat',
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      zIndex: 1000
+      backgroundAttachment: 'fixed',
+      padding: '20px'
     }}>
       <div className="glass" style={{
         padding: '40px',
-        width: '400px',
+        width: '100%',
+        maxWidth: '400px',
         textAlign: 'center'
       }}>
         <h2 style={{ marginBottom: '10px' }}>Welcome Back</h2>
@@ -102,7 +99,7 @@ const LoginPage = ({ onLogin }) => {
           Don't have an account? <a href="/register" style={{ color: 'var(--primary)', textDecoration: 'none' }}>Register here</a>
         </p>
       </div>
-    </div >
+    </div>
   );
 };
 
