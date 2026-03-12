@@ -22,9 +22,10 @@ const StudentTable = () => {
       const apiUrl = import.meta.env.VITE_API_URL || 'https://school-management-backend-gnav.onrender.com';
       const res = await fetch(`${apiUrl}/api/admin/students`);
       const data = await res.json();
+      console.log('Students data from API:', data);
       setStudents(data);
     } catch (err) {
-      console.error(err);
+      console.error('Error fetching students:', err);
     } finally {
       setLoading(false);
     }
@@ -226,7 +227,7 @@ const StudentTable = () => {
                       fontFamily: 'monospace',
                       border: '1px solid rgba(6, 182, 212, 0.3)'
                     }}>
-                      {s.student_id}
+                      {s.student_id || 'N/A'}
                     </span>
                     <button
                       onClick={() => copyStudentId(s.student_id)}
@@ -241,6 +242,7 @@ const StudentTable = () => {
                         transition: 'color 0.2s'
                       }}
                       title="Copy Student ID"
+                      disabled={!s.student_id}
                     >
                       {copiedId === s.student_id ? <Check size={16} /> : <Copy size={16} />}
                     </button>
