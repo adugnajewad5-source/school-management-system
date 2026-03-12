@@ -22,7 +22,12 @@ const StudentTable = () => {
       const apiUrl = import.meta.env.VITE_API_URL || 'https://school-management-backend-gnav.onrender.com';
       const res = await fetch(`${apiUrl}/api/admin/students`);
       const data = await res.json();
-      console.log('Students data from API:', data);
+      console.log('=== STUDENTS DATA FROM API ===');
+      console.log('Total students:', data.length);
+      console.log('First student:', data[0]);
+      console.log('All students:', data);
+      console.log('First student_id:', data[0]?.student_id);
+      console.log('================================');
       setStudents(data);
     } catch (err) {
       console.error('Error fetching students:', err);
@@ -215,37 +220,41 @@ const StudentTable = () => {
           <tbody>
             {filteredStudents.length > 0 ? filteredStudents.map(s => (
               <tr key={s.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
-                <td style={{ padding: '12px' }}>
+                <td style={{ padding: '12px', minWidth: '120px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <span style={{ 
                       fontWeight: 'bold', 
-                      color: 'var(--primary)', 
-                      background: 'rgba(6, 182, 212, 0.15)',
-                      padding: '6px 10px',
-                      borderRadius: '8px',
-                      fontSize: '0.85rem',
+                      color: '#000',
+                      background: '#e0f2fe',
+                      padding: '8px 12px',
+                      borderRadius: '6px',
+                      fontSize: '0.9rem',
                       fontFamily: 'monospace',
-                      border: '1px solid rgba(6, 182, 212, 0.3)'
+                      border: '2px solid #0ea5e9',
+                      minWidth: '80px',
+                      textAlign: 'center',
+                      display: 'inline-block'
                     }}>
-                      {s.student_id || 'N/A'}
+                      {s.student_id && s.student_id.trim() ? s.student_id : 'N/A'}
                     </span>
-                    <button
-                      onClick={() => copyStudentId(s.student_id)}
-                      style={{
-                        background: 'transparent',
-                        border: 'none',
-                        color: copiedId === s.student_id ? '#22c55e' : 'var(--text-secondary)',
-                        cursor: 'pointer',
-                        padding: '4px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        transition: 'color 0.2s'
-                      }}
-                      title="Copy Student ID"
-                      disabled={!s.student_id}
-                    >
-                      {copiedId === s.student_id ? <Check size={16} /> : <Copy size={16} />}
-                    </button>
+                    {s.student_id && s.student_id.trim() && (
+                      <button
+                        onClick={() => copyStudentId(s.student_id)}
+                        style={{
+                          background: 'transparent',
+                          border: 'none',
+                          color: copiedId === s.student_id ? '#22c55e' : '#666',
+                          cursor: 'pointer',
+                          padding: '4px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          transition: 'color 0.2s'
+                        }}
+                        title="Copy Student ID"
+                      >
+                        {copiedId === s.student_id ? <Check size={16} /> : <Copy size={16} />}
+                      </button>
+                    )}
                   </div>
                 </td>
 
