@@ -57,17 +57,24 @@ const upload = multer({
 
 // Student uploads a PDF
 router.post('/upload', upload.single('pdf'), async (req, res) => {
+  console.log('📤 PDF Upload Request Received');
+  console.log('File:', req.file);
+  console.log('Body:', req.body);
+  
   try {
     if (!req.file) {
+      console.log('❌ No file uploaded');
       return res.status(400).json({ message: 'No PDF file uploaded' });
     }
 
     const { student_id, student_name, subject, message } = req.body;
 
     if (!student_id) {
+      console.log('❌ No student_id provided');
       return res.status(400).json({ message: 'Student ID is required' });
     }
 
+    console.log('📝 Saving to database...');
     const connection = await pool.getConnection();
     
     try {
@@ -76,12 +83,13 @@ router.post('/upload', upload.single('pdf'), async (req, res) => {
         [student_id, student_name, req.file.filename, req.file.originalname, subject || 'General', message || '']
       );
 
+      console.log('✅ Document saved successfully');
       res.json({ message: 'Document submitted successfully to teacher!' });
     } finally {
       connection.release();
     }
   } catch (err) {
-    console.error('Submission upload error:', err);
+    console.error('❌ Submission upload error:', err);
     res.status(500).json({ message: 'Upload failed: ' + err.message });
   }
 });
