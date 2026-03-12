@@ -26,7 +26,8 @@ const SubmitPDFPage = ({ user }) => {
     formData.append('message', message);
 
     try {
-      const res = await fetch(`http://${window.location.hostname}:5000/api/submissions/upload`, {
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://school-management-backend-gnav.onrender.com';
+      const res = await fetch(`${apiUrl}/api/submissions/upload`, {
         method: 'POST',
         body: formData
       });

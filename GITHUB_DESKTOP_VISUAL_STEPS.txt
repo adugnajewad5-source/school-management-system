@@ -1,0 +1,300 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                  GITHUB DESKTOP - VISUAL STEP-BY-STEP                     ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+STEP 1: DOWNLOAD GITHUB DESKTOP
+═════════════════════════════════════════════════════════════════════════════
+
+1. Open your browser
+2. Go to: https://desktop.github.com/
+3. Click the big blue "Download for Windows" button
+4. Wait for download to complete
+5. Run the installer (GitHubDesktopSetup.exe)
+6. Follow the installation wizard
+7. GitHub Desktop will open automatically
+
+Expected: GitHub Desktop window opens
+
+
+STEP 2: SIGN IN TO GITHUB
+═════════════════════════════════════════════════════════════════════════════
+
+When GitHub Desktop opens:
+
+1. You'll see a "Welcome to GitHub Desktop" screen
+2. Click "Sign in with your browser"
+3. Your browser will open GitHub login page
+4. Enter your GitHub username
+5. Enter your GitHub password
+6. Click "Sign in"
+7. GitHub will ask to authorize GitHub Desktop
+8. Click "Authorize desktop"
+9. Return to GitHub Desktop
+10. You're now signed in ✅
+
+Expected: GitHub Desktop shows your GitHub account
+
+
+STEP 3: CLONE YOUR REPOSITORY
+═════════════════════════════════════════════════════════════════════════════
+
+In GitHub Desktop:
+
+1. Click "File" (top menu)
+   
+   ┌─────────────────────────────────────────┐
+   │ File  Edit  View  Repository  Branch    │
+   └─────────────────────────────────────────┘
+
+2. Click "Clone Repository"
+
+3. A dialog will appear:
+   
+   ┌─────────────────────────────────────────┐
+   │ Clone a Repository                      │
+   │ ┌─────────────────────────────────────┐ │
+   │ │ GitHub.com  GitHub Enterprise       │ │
+   │ └─────────────────────────────────────┘ │
+   │                                         │
+   │ Search: [________________]              │
+   │                                         │
+   │ school-management-system                │
+   │ adugnajewad5-source/school-management.. │
+   │                                         │
+   │ Local Path: C:\Users\...\Documents\     │
+   │                                         │
+   │ [Clone]  [Cancel]                       │
+   └─────────────────────────────────────────┘
+
+4. Make sure "GitHub.com" tab is selected
+5. Search for: school-management-system
+6. Click on: adugnajewad5-source/school-management-system
+7. Choose where to save (default is fine)
+8. Click "Clone"
+9. Wait 1-2 minutes for download
+
+Expected: Repository is cloned and ready
+
+
+STEP 4: VIEW CHANGES
+═════════════════════════════════════════════════════════════════════════════
+
+Once cloned:
+
+1. GitHub Desktop will show your repository
+2. Click the "Changes" tab (top of window)
+
+   ┌─────────────────────────────────────────┐
+   │ [Changes]  [History]                    │
+   └─────────────────────────────────────────┘
+
+3. You should see "vercel.json" in the list
+
+   ┌─────────────────────────────────────────┐
+   │ Modified Files:                         │
+   │ ✓ vercel.json                           │
+   │                                         │
+   │ Changes:                                │
+   │ - "buildCommand": "npm --prefix...      │
+   │ + "buildCommand": "npm --prefix...      │
+   └─────────────────────────────────────────┘
+
+4. The changes will be highlighted:
+   - Red lines: old code
+   - Green lines: new code
+
+
+STEP 5: ENTER COMMIT MESSAGE
+═════════════════════════════════════════════════════════════════════════════
+
+At the bottom left of GitHub Desktop:
+
+1. You'll see a text box labeled "Summary (required)"
+
+   ┌─────────────────────────────────────────┐
+   │ Summary (required):                     │
+   │ ┌─────────────────────────────────────┐ │
+   │ │ [cursor here]                       │ │
+   │ └─────────────────────────────────────┘ │
+   │                                         │
+   │ Description (optional):                 │
+   │ ┌─────────────────────────────────────┐ │
+   │ │                                     │ │
+   │ └─────────────────────────────────────┘ │
+   └─────────────────────────────────────────┘
+
+2. Click in the "Summary" box
+3. Type this message:
+
+   Fix: Trigger Vercel redeploy for register page - use npm ci for cleaner install
+
+4. You can leave "Description" empty
+5. You'll see the "Commit to main" button become active
+
+
+STEP 6: COMMIT CHANGES
+═════════════════════════════════════════════════════════════════════════════
+
+1. Click the "Commit to main" button
+
+   ┌─────────────────────────────────────────┐
+   │ [Commit to main]                        │
+   └─────────────────────────────────────────┘
+
+2. GitHub Desktop will process the commit
+3. You'll see a confirmation message
+4. The button will change to "Push origin"
+
+Expected: Commit is created locally
+
+
+STEP 7: PUSH TO GITHUB
+═════════════════════════════════════════════════════════════════════════════
+
+1. Click the "Push origin" button
+
+   ┌─────────────────────────────────────────┐
+   │ [Push origin]                           │
+   └─────────────────────────────────────────┘
+
+2. GitHub Desktop will upload your changes
+3. You'll see a progress indicator
+4. Once complete, you'll see a confirmation
+
+Expected: Changes are now on GitHub ✅
+
+
+STEP 8: VERIFY PUSH
+═════════════════════════════════════════════════════════════════════════════
+
+1. Go to: https://github.com/adugnajewad5-source/school-management-system
+2. You should see your commit message in the commit history
+3. The vercel.json file should show the updated code
+
+Expected: Your changes are visible on GitHub ✅
+
+
+STEP 9: WAIT FOR VERCEL DEPLOYMENT
+═════════════════════════════════════════════════════════════════════════════
+
+1. Go to: https://vercel.com/dashboard
+2. Find: "school-management-system" project
+3. Watch the deployment status:
+
+   Building... → Ready ✅
+
+4. This usually takes 2-5 minutes
+
+Expected: Deployment completes successfully ✅
+
+
+STEP 10: TEST REGISTER PAGE
+═════════════════════════════════════════════════════════════════════════════
+
+Once Vercel shows "Ready":
+
+1. Visit: https://school-management-system-nu-pink.vercel.app
+2. Click "Sign In" button
+3. Click "Register here" link
+4. Register page should load WITHOUT 404 error ✅
+
+Expected: Register page displays correctly ✅
+
+
+COMPLETE WORKFLOW SUMMARY
+═════════════════════════════════════════════════════════════════════════════
+
+Step 1: Download GitHub Desktop
+  └─ Time: 2 minutes
+  └─ Action: Download and install
+
+Step 2: Sign in to GitHub
+  └─ Time: 1 minute
+  └─ Action: Authenticate with GitHub
+
+Step 3: Clone repository
+  └─ Time: 2 minutes
+  └─ Action: Download your project
+
+Step 4: View changes
+  └─ Time: 1 minute
+  └─ Action: See vercel.json changes
+
+Step 5: Enter commit message
+  └─ Time: 1 minute
+  └─ Action: Type commit message
+
+Step 6: Commit changes
+  └─ Time: 1 minute
+  └─ Action: Create local commit
+
+Step 7: Push to GitHub
+  └─ Time: 1 minute
+  └─ Action: Upload to GitHub
+
+Step 8: Verify push
+  └─ Time: 1 minute
+  └─ Action: Check GitHub website
+
+Step 9: Wait for Vercel
+  └─ Time: 5-10 minutes
+  └─ Action: Automatic deployment
+
+Step 10: Test register page
+  └─ Time: 2 minutes
+  └─ Action: Verify fix works
+
+TOTAL TIME: 15-20 minutes
+
+
+TROUBLESHOOTING
+═════════════════════════════════════════════════════════════════════════════
+
+Problem: "Repository not found"
+Solution:
+  1. Make sure you're signed in to GitHub
+  2. Try searching again
+  3. If still not found, you might need to fork the repository first
+
+Problem: "Authentication failed"
+Solution:
+  1. Click File → Options
+  2. Click Accounts
+  3. Sign out and sign in again
+  4. Follow browser authentication
+
+Problem: "Changes don't show up"
+Solution:
+  1. Make sure you're in the correct repository
+  2. Click Repository → Show in Explorer
+  3. Verify vercel.json is in the root directory
+
+Problem: "Push failed"
+Solution:
+  1. Make sure you have internet connection
+  2. Try pushing again
+  3. Check GitHub status: https://www.githubstatus.com/
+
+Problem: "Register page still shows 404"
+Solution:
+  1. Hard refresh browser: Ctrl+Shift+R
+  2. Try in incognito/private window
+  3. Check Vercel dashboard for deployment errors
+  4. Wait a few more minutes for deployment to complete
+
+
+IMPORTANT LINKS
+═════════════════════════════════════════════════════════════════════════════
+
+GitHub Desktop:        https://desktop.github.com/
+Your Repository:       https://github.com/adugnajewad5-source/school-management-system
+Vercel Dashboard:      https://vercel.com/dashboard
+Frontend URL:          https://school-management-system-nu-pink.vercel.app
+Backend URL:           https://school-management-backend-gnav.onrender.com
+
+
+═════════════════════════════════════════════════════════════════════════════
+
+That's it! Follow these steps and your register page will be fixed.
+
+═════════════════════════════════════════════════════════════════════════════

@@ -68,14 +68,14 @@ exports.createPreRegisteredStudent = async (req, res) => {
 exports.getStudents = async (req, res) => {
   try {
     const [students] = await pool.execute(`
-      SELECT s.*, u.username, u.email 
+      SELECT s.id, s.student_id, s.user_id, s.name, s.class, s.age, s.parent_phone, s.temp_password, s.is_registered, u.username, u.email, u.id as userId
       FROM students s 
       LEFT JOIN users u ON s.user_id = u.id
     `);
     res.json(students);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Server error' });
+    console.error('Error fetching students:', err);
+    res.status(500).json({ message: 'Server error: ' + err.message });
   }
 };
 

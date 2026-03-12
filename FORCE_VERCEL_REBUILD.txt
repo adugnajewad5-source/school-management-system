@@ -1,0 +1,2 @@
+Force Vercel rebuild - timestamp: 2026-03-11 (Register page fix)
+This file triggers a new deployment to ensure the latest vercel.json configuration is applied.

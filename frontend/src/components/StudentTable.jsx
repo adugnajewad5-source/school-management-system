@@ -68,9 +68,9 @@ const StudentTable = () => {
     }
   };
 
-  const copyStudentId = (studentId) => {
-    navigator.clipboard.writeText(studentId);
-    setCopiedId(studentId);
+  const copyStudentId = (student_id) => {
+    navigator.clipboard.writeText(student_id);
+    setCopiedId(student_id);
     setTimeout(() => setCopiedId(null), 2000);
   };
 
@@ -89,7 +89,7 @@ const StudentTable = () => {
     
     // Prepare table data
     const tableData = filteredStudents.map(s => [
-      s.studentId || 'N/A',
+      s.student_id || 'N/A',
       s.name || s.username || 'N/A',
       s.class || 'N/A',
       s.parent_phone || 'N/A',
@@ -126,7 +126,7 @@ const StudentTable = () => {
     
     const query = searchQuery.toLowerCase();
     return (
-      (student.studentId && student.studentId.toLowerCase().includes(query)) ||
+      (student.student_id && student.student_id.toLowerCase().includes(query)) ||
       (student.name && student.name.toLowerCase().includes(query)) ||
       (student.username && student.username.toLowerCase().includes(query)) ||
       (student.class && student.class.toLowerCase().includes(query)) ||
@@ -226,14 +226,14 @@ const StudentTable = () => {
                       fontFamily: 'monospace',
                       border: '1px solid rgba(6, 182, 212, 0.3)'
                     }}>
-                      {s.studentId}
+                      {s.student_id}
                     </span>
                     <button
-                      onClick={() => copyStudentId(s.studentId)}
+                      onClick={() => copyStudentId(s.student_id)}
                       style={{
                         background: 'transparent',
                         border: 'none',
-                        color: copiedId === s.studentId ? '#22c55e' : 'var(--text-secondary)',
+                        color: copiedId === s.student_id ? '#22c55e' : 'var(--text-secondary)',
                         cursor: 'pointer',
                         padding: '4px',
                         display: 'flex',
@@ -242,7 +242,7 @@ const StudentTable = () => {
                       }}
                       title="Copy Student ID"
                     >
-                      {copiedId === s.studentId ? <Check size={16} /> : <Copy size={16} />}
+                      {copiedId === s.student_id ? <Check size={16} /> : <Copy size={16} />}
                     </button>
                   </div>
                 </td>
@@ -266,7 +266,7 @@ const StudentTable = () => {
                     <td style={{ padding: '12px' }}>{s.email}</td>
                     <td style={{ padding: '12px', textAlign: 'right' }}>
                       <button onClick={() => handleEdit(s)} style={{ background: 'transparent', border: 'none', color: '#6366f1', cursor: 'pointer', marginRight: '15px' }} title="Edit"><Pencil size={18} /></button>
-                      <button onClick={() => handleDelete(s.userId)} style={{ background: 'transparent', border: 'none', color: '#f43f5e', cursor: 'pointer' }} title="Delete Account entirely"><Trash2 size={18} /></button>
+                      <button onClick={() => handleDelete(s.userId || s.user_id)} style={{ background: 'transparent', border: 'none', color: '#f43f5e', cursor: 'pointer' }} title="Delete Account entirely"><Trash2 size={18} /></button>
                     </td>
                   </>
                 )}
