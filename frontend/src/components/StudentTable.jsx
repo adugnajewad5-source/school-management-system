@@ -245,16 +245,17 @@ const StudentTable = () => {
                     <span style={{ 
                       fontWeight: 'bold', 
                       color: '#ffffff',
-                      background: '#1e40af',
-                      padding: '8px 12px',
-                      borderRadius: '6px',
-                      fontSize: '0.9rem',
-                      fontFamily: 'monospace',
-                      border: '2px solid #3b82f6',
-                      minWidth: '80px',
+                      background: '#dc2626',
+                      padding: '10px 15px',
+                      borderRadius: '8px',
+                      fontSize: '1rem',
+                      fontFamily: 'Arial, sans-serif',
+                      border: '3px solid #991b1b',
+                      minWidth: '100px',
                       textAlign: 'center',
                       display: 'inline-block',
-                      boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                      boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
+                      textShadow: '1px 1px 2px rgba(0,0,0,0.5)'
                     }}>
                       {s.student_id || 'NO-ID'}
                     </span>
