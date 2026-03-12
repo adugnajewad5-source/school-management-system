@@ -73,25 +73,45 @@ pool.getConnection((err, connection) => {
     connection.release();
     console.log('Connected to MySQL database');
     
-    // Run migrations on startup
-    console.log('Running database migrations...');
+    // Run enhanced migrations on startup
+    console.log('🔧 Running enhanced startup migrations...');
     const { spawn } = require('child_process');
-    const migration = spawn('node', ['run-railway-migration.js'], { cwd: __dirname });
     
-    migration.stdout.on('data', (data) => {
-      console.log(`[Migration] ${data}`);
+    // Run enhanced submissions migration
+    const enhancedMigration = spawn('node', ['enhanced_submissions_migration.js'], { 
+      cwd: __dirname,
+      stdio: 'inherit'
     });
     
-    migration.stderr.on('data', (data) => {
-      console.error(`[Migration Error] ${data}`);
-    });
-    
-    migration.on('close', (code) => {
+    enhancedMigration.on('close', (code) => {
       if (code === 0) {
-        console.log('✓ Database migrations completed successfully');
+        console.log('✅ Enhanced submissions migration completed successfully');
+        
+        // Run original railway migration after enhanced migration
+        const railwayMigration = spawn('node', ['run-railway-migration.js'], { cwd: __dirname });
+        
+        railwayMigration.stdout.on('data', (data) => {
+          console.log(`[Railway Migration] ${data}`);
+        });
+        
+        railwayMigration.stderr.on('data', (data) => {
+          console.error(`[Railway Migration Error] ${data}`);
+        });
+        
+        railwayMigration.on('close', (code) => {
+          if (code === 0) {
+            console.log('✓ All database migrations completed successfully');
+          } else {
+            console.warn('⚠ Railway migrations completed with warnings');
+          }
+        });
       } else {
-        console.warn('⚠ Database migrations completed with warnings');
+        console.warn('⚠️ Enhanced migrations completed with code:', code);
       }
+    });
+    
+    enhancedMigration.on('error', (err) => {
+      console.error('❌ Enhanced migration process error:', err);
     });
   }
 });

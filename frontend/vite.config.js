@@ -7,4 +7,12 @@ export default defineConfig({
   build: {
     chunkSizeWarningLimit: 1000,
   },
+  server: {
+    // Enable history API fallback for client-side routing
+    historyApiFallback: true,
+  },
+  preview: {
+    // Enable history API fallback for preview mode
+    historyApiFallback: true,
+  }
 })

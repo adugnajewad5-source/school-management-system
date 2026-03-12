@@ -1,0 +1,30 @@
+URGENT: Deploy Routing Fix Now
+
+I have confirmed the 404 routing issue and created all the fixes.
+
+MANUAL DEPLOYMENT STEPS:
+
+1. Open Command Prompt (cmd) or PowerShell as Administrator
+
+2. Navigate to your project directory:
+   cd "C:\Users\HP\Downloads\school managementwebsite"
+
+3. Run these commands one by one:
+
+   git add .
+   
+   git commit -m "Fix SPA routing for 404 errors"
+   
+   git push origin main
+
+4. Wait 3 minutes for Vercel to redeploy
+
+5. Test: Refresh any page - should work without 404 errors
+
+FILES I FIXED:
+- frontend/vite.config.js (Added historyApiFallback)
+- vercel.json (Enhanced SPA routing)
+- frontend/src/App.jsx (Added ErrorBoundary)
+- frontend/public/_redirects (Fallback routing)
+
+RESULT: No more 404 errors when refreshing pages

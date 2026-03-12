@@ -20,17 +20,37 @@ const StudentTable = () => {
   const fetchStudents = async () => {
     try {
       const apiUrl = import.meta.env.VITE_API_URL || 'https://school-management-backend-gnav.onrender.com';
+      console.log('🔍 FETCHING STUDENTS FROM:', apiUrl + '/api/admin/students');
+      
       const res = await fetch(`${apiUrl}/api/admin/students`);
       const data = await res.json();
-      console.log('=== STUDENTS DATA FROM API ===');
-      console.log('Total students:', data.length);
-      console.log('First student:', data[0]);
-      console.log('All students:', data);
-      console.log('First student_id:', data[0]?.student_id);
+      
+      console.log('=== DETAILED STUDENT DATA ANALYSIS ===');
+      console.log('API Response Status:', res.status);
+      console.log('Total students received:', data.length);
+      console.log('Raw API Response:', data);
+      
+      // Check each student's student_id specifically
+      data.forEach((student, index) => {
+        console.log(`Student ${index + 1}:`, {
+          id: student.id,
+          student_id: student.student_id,
+          student_id_type: typeof student.student_id,
+          student_id_length: student.student_id ? student.student_id.length : 0,
+          name: student.name,
+          has_student_id: !!student.student_id
+        });
+      });
+      
+      console.log('=== STUDENT IDs EXTRACTED ===');
+      const studentIds = data.map(s => s.student_id).filter(Boolean);
+      console.log('All Student IDs:', studentIds);
+      console.log('Student IDs count:', studentIds.length);
       console.log('================================');
+      
       setStudents(data);
     } catch (err) {
-      console.error('Error fetching students:', err);
+      console.error('❌ Error fetching students:', err);
     } finally {
       setLoading(false);
     }
@@ -224,20 +244,21 @@ const StudentTable = () => {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <span style={{ 
                       fontWeight: 'bold', 
-                      color: '#000',
-                      background: '#e0f2fe',
+                      color: '#ffffff',
+                      background: '#1e40af',
                       padding: '8px 12px',
                       borderRadius: '6px',
                       fontSize: '0.9rem',
                       fontFamily: 'monospace',
-                      border: '2px solid #0ea5e9',
+                      border: '2px solid #3b82f6',
                       minWidth: '80px',
                       textAlign: 'center',
-                      display: 'inline-block'
+                      display: 'inline-block',
+                      boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
                     }}>
-                      {s.student_id && s.student_id.trim() ? s.student_id : 'N/A'}
+                      {s.student_id || 'NO-ID'}
                     </span>
-                    {s.student_id && s.student_id.trim() && (
+                    {s.student_id && (
                       <button
                         onClick={() => copyStudentId(s.student_id)}
                         style={{
