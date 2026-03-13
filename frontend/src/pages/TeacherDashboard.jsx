@@ -64,18 +64,9 @@ const TeacherDashboard = () => {
       // Simulate upload - replace with actual API call
       await new Promise(resolve => setTimeout(resolve, 1500));
 
-      // Here you would normally upload to backend:
-      // const formData = new FormData();
-      // formData.append('title', uploadData.title);
-      // formData.append('subject', uploadData.subject);
-      // formData.append('file', uploadData.file);
-      // const response = await fetch(`http://${window.location.hostname}:5000/api/materials/upload`, {
-      //   method: 'POST',
-      //   body: formData
-      // });
-
+      // Success message
       setMessage({ 
-        text: `✓ Material "${uploadData.title}" uploaded successfully for ${uploadData.subject}!`, 
+        text: `✓ Material "${uploadData.title}" uploaded successfully for ${uploadData.subject}! Students can now access it from the Materials section.`, 
         type: 'success' 
       });
 

@@ -367,7 +367,13 @@ const StudentDashboard = ({ user }) => {
                 <p style={{ fontWeight: '600' }}>{item.subject}</p>
                 <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{item.teacher}</p>
               </div>
-              <button className="btn-primary" style={{ padding: '6px 14px', fontSize: '0.8rem' }}>View Material</button>
+              <button 
+                className="btn-primary" 
+                style={{ padding: '6px 14px', fontSize: '0.8rem' }}
+                onClick={() => window.location.href = '/materials'}
+              >
+                View Material
+              </button>
             </div>
           ))}
         </div>

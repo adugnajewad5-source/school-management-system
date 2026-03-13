@@ -288,43 +288,43 @@ const ResultPage = ({ user }) => {
                   )}
                   <td style={{ padding: '16px', color: 'var(--text-secondary)' }}>{res.subject}</td>
                   
-                  {/* Detailed Marks Breakdown */}
+                  {/* Detailed Marks Breakdown - Show from API response if available */}
                   <td style={{ padding: '16px', textAlign: 'center' }}>
                     <span style={{ 
-                      background: res.mid_exam_marks ? 'rgba(59, 130, 246, 0.1)' : 'rgba(156, 163, 175, 0.1)',
-                      color: res.mid_exam_marks ? '#3b82f6' : '#9ca3af',
+                      background: res.breakdown?.midExam ? 'rgba(59, 130, 246, 0.1)' : 'rgba(156, 163, 175, 0.1)',
+                      color: res.breakdown?.midExam ? '#3b82f6' : '#9ca3af',
                       padding: '4px 8px',
                       borderRadius: '4px',
                       fontSize: '0.9rem',
                       fontWeight: '600'
                     }}>
-                      {res.mid_exam_marks || '-'}/30
+                      {res.breakdown?.midExam || '-'}/30
                     </span>
                   </td>
                   
                   <td style={{ padding: '16px', textAlign: 'center' }}>
                     <span style={{ 
-                      background: res.assignment_marks ? 'rgba(168, 85, 247, 0.1)' : 'rgba(156, 163, 175, 0.1)',
-                      color: res.assignment_marks ? '#a855f7' : '#9ca3af',
+                      background: res.breakdown?.assignment ? 'rgba(168, 85, 247, 0.1)' : 'rgba(156, 163, 175, 0.1)',
+                      color: res.breakdown?.assignment ? '#a855f7' : '#9ca3af',
                       padding: '4px 8px',
                       borderRadius: '4px',
                       fontSize: '0.9rem',
                       fontWeight: '600'
                     }}>
-                      {res.assignment_marks || '-'}/20
+                      {res.breakdown?.assignment || '-'}/20
                     </span>
                   </td>
                   
                   <td style={{ padding: '16px', textAlign: 'center' }}>
                     <span style={{ 
-                      background: res.final_exam_marks ? 'rgba(34, 197, 94, 0.1)' : 'rgba(156, 163, 175, 0.1)',
-                      color: res.final_exam_marks ? '#22c55e' : '#9ca3af',
+                      background: res.breakdown?.finalExam ? 'rgba(34, 197, 94, 0.1)' : 'rgba(156, 163, 175, 0.1)',
+                      color: res.breakdown?.finalExam ? '#22c55e' : '#9ca3af',
                       padding: '4px 8px',
                       borderRadius: '4px',
                       fontSize: '0.9rem',
                       fontWeight: '600'
                     }}>
-                      {res.final_exam_marks || '-'}/50
+                      {res.breakdown?.finalExam || '-'}/50
                     </span>
                   </td>
                   

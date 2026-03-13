@@ -20,6 +20,7 @@ import AccessDenied from './pages/AccessDenied';
 import SettingsPage from './pages/SettingsPage';
 import SubmitPDFPage from './pages/SubmitPDFPage';
 import SubmissionsPage from './pages/SubmissionsPage';
+import SimpleMaterialsPage from './pages/SimpleMaterialsPage';
 
 // 🛡️ Protected Route Component
 const ProtectedRoute = ({ user, children, allowedRoles }) => {
@@ -182,6 +183,9 @@ function App() {
             } />
             <Route path="/submissions" element={
               <ProtectedRoute user={user} allowedRoles={['teacher', 'admin']}><SubmissionsPage /></ProtectedRoute>
+            } />
+            <Route path="/materials" element={
+              <ProtectedRoute user={user} allowedRoles={['student', 'teacher', 'admin']}><SimpleMaterialsPage user={user} /></ProtectedRoute>
             } />
 
             {/* Catch-all route for 404 errors */}

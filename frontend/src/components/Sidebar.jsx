@@ -13,7 +13,9 @@ import {
   UserPlus,
   Settings,
   FileUp,
-  Inbox
+  Inbox,
+  FileText,
+  Upload
 } from 'lucide-react';
 
 const Sidebar = ({ role, onLogout }) => {
@@ -21,6 +23,7 @@ const Sidebar = ({ role, onLogout }) => {
     student: [
       { name: 'Dashboard', icon: LayoutDashboard, path: '/student' },
       { name: 'Results', icon: GraduationCap, path: '/results' },
+      { name: 'Materials', icon: FileText, path: '/materials' },
       { name: 'Submit PDF', icon: FileUp, path: '/submit-pdf' },
       { name: 'Timetable', icon: CalendarDays, path: '/timetable' },
       { name: 'Payments', icon: CreditCard, path: '/payments' },
@@ -28,6 +31,7 @@ const Sidebar = ({ role, onLogout }) => {
     teacher: [
       { name: 'Dashboard', icon: LayoutDashboard, path: '/teacher' },
       { name: 'Students', icon: Users, path: '/students' },
+      { name: 'Materials', icon: FileText, path: '/materials' },
       { name: 'Submissions', icon: Inbox, path: '/submissions' },
       { name: 'Attendance', icon: CalendarCheck, path: '/attendance' },
       { name: 'Results', icon: GraduationCap, path: '/results' },
