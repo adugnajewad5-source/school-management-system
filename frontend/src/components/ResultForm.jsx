@@ -28,7 +28,10 @@ const ResultForm = ({ onSubmit, initialData }) => {
 
   // Verify student ID when it changes
   const verifyStudentId = async (studentId) => {
-    if (!studentId || studentId.length < 3) {
+    // Clean the input - remove extra spaces and convert to uppercase
+    const cleanStudentId = studentId?.trim().toUpperCase();
+    
+    if (!cleanStudentId || cleanStudentId.length < 3) {
       setStudentVerification({ status: null, message: '' });
       setFormData(prev => ({ ...prev, student: '' }));
       setStudentData(null);
@@ -39,18 +42,27 @@ const ResultForm = ({ onSubmit, initialData }) => {
 
     try {
       const apiUrl = import.meta.env.VITE_API_URL || 'https://school-management-backend-gnav.onrender.com';
+      console.log('🔍 STUDENT VERIFICATION DEBUG:');
+      console.log('- Input Student ID:', studentId);
+      console.log('- Cleaned Student ID:', cleanStudentId);
+      console.log('- API URL:', `${apiUrl}/api/admin/students`);
+      
       const response = await fetch(`${apiUrl}/api/admin/students`);
       
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
       
       const students = await response.json();
-      console.log('🔍 Searching for Student ID:', studentId);
-      console.log('📋 Available students:', students.map(s => ({ id: s.student_id, name: s.name })));
+      console.log('📋 Total students received:', students.length);
+      console.log('📋 Available Student IDs:', students.map(s => s.student_id));
       
-      // Look for student_id field (not studentId)
-      const foundStudent = students.find(s => s.student_id === studentId);
+      // Look for student_id field with case-insensitive and whitespace-tolerant matching
+      const foundStudent = students.find(s => {
+        const dbStudentId = s.student_id?.trim().toUpperCase();
+        console.log(`Comparing: "${cleanStudentId}" === "${dbStudentId}"`);
+        return dbStudentId === cleanStudentId;
+      });
       
       if (foundStudent) {
         console.log('✅ Student found:', foundStudent);
@@ -64,33 +76,39 @@ const ResultForm = ({ onSubmit, initialData }) => {
         }));
         setStudentData(foundStudent);
       } else {
-        console.log('❌ Student not found for ID:', studentId);
+        console.log('❌ Student not found for ID:', cleanStudentId);
+        console.log('❌ Available IDs for comparison:', students.map(s => s.student_id?.trim().toUpperCase()));
         setStudentVerification({ 
           status: 'invalid', 
-          message: '✗ Student ID not found in database' 
+          message: `✗ Student ID "${cleanStudentId}" not found. Available IDs: ${students.slice(0, 3).map(s => s.student_id).join(', ')}...` 
         });
         setFormData(prev => ({ ...prev, student: '' }));
         setStudentData(null);
       }
     } catch (error) {
-      console.error('Error verifying student:', error);
+      console.error('❌ Error verifying student:', error);
       setStudentVerification({ 
         status: 'invalid', 
-        message: 'Error connecting to server. Please try again.' 
+        message: `Error connecting to server: ${error.message}. Please try again.` 
       });
     }
   };
 
   const handleStudentIdChange = (e) => {
-    const newStudentId = e.target.value;
+    let newStudentId = e.target.value.toUpperCase().trim();
+    
+    // Auto-format: if user types just numbers, add STU- prefix
+    if (/^\d{3}$/.test(newStudentId)) {
+      newStudentId = `STU-${newStudentId}`;
+    }
+    
     setFormData({ ...formData, studentId: newStudentId });
     
     // Debounce the verification
-    const timeoutId = setTimeout(() => {
+    clearTimeout(window.studentIdTimeout);
+    window.studentIdTimeout = setTimeout(() => {
       verifyStudentId(newStudentId);
     }, 500);
-
-    return () => clearTimeout(timeoutId);
   };
 
   const handleSubmit = (e) => {
@@ -134,14 +152,15 @@ const ResultForm = ({ onSubmit, initialData }) => {
           <input
             type="text"
             className="input-field"
-            placeholder="e.g., STU-001"
+            placeholder="e.g., STU-357, STU-285, STU-311"
             value={formData.studentId}
             onChange={handleStudentIdChange}
             required
             style={{
               borderColor: studentVerification.status === 'valid' ? '#22c55e' : 
                           studentVerification.status === 'invalid' ? '#f43f5e' : 
-                          'var(--border-color)'
+                          'var(--border-color)',
+              textTransform: 'uppercase'
             }}
           />
           {studentVerification.message && (
@@ -160,6 +179,9 @@ const ResultForm = ({ onSubmit, initialData }) => {
               {studentVerification.message}
             </div>
           )}
+          <p style={{ marginTop: '6px', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+            Available Student IDs: STU-357, STU-285, STU-311, STU-491, STU-755, STU-184, STU-585, STU-262, STU-443, STU-800, STU-984
+          </p>
         </div>
         <div style={{ marginBottom: '15px' }}>
           <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem' }}>Student Name</label>
