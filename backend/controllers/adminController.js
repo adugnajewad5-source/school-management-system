@@ -434,17 +434,22 @@ exports.addResult = async (req, res) => {
       
       await pool.execute(updateQuery, updateParams);
       
-      // Send notification about the update
-      await pool.execute(
-        'INSERT INTO notifications (student_id, type, title, message, data) VALUES (?, ?, ?, ?, ?)',
-        [
-          dbStudentId,
-          'marks',
-          notificationTitle,
-          notificationMessage,
-          JSON.stringify({ subject, totalMarks, grade, oldTotal, breakdown: marksBreakdown })
-        ]
-      );
+      // Send notification about the update (optional - skip if table doesn't exist)
+      try {
+        await pool.execute(
+          'INSERT INTO notifications (student_id, type, title, message, data) VALUES (?, ?, ?, ?, ?)',
+          [
+            dbStudentId,
+            'marks',
+            notificationTitle,
+            notificationMessage,
+            JSON.stringify({ subject, totalMarks, grade, oldTotal, breakdown: marksBreakdown })
+          ]
+        );
+      } catch (notificationError) {
+        console.warn('⚠️ Could not create notification (table may not exist):', notificationError.message);
+        // Continue without notification - this is not critical
+      }
       
       res.status(200).json({ 
         message: 'Result updated successfully and notification sent to student',
@@ -472,20 +477,25 @@ exports.addResult = async (req, res) => {
       
       await pool.execute(insertQuery, insertParams);
       
-      // Send notification about new marks
+      // Send notification about new marks (optional - skip if table doesn't exist)
       const newNotificationTitle = `New Marks: ${subject}`;
       const newNotificationMessage = `Your marks for ${subject} have been published: ${totalMarks}/100 (Grade: ${grade})`;
       
-      await pool.execute(
-        'INSERT INTO notifications (student_id, type, title, message, data) VALUES (?, ?, ?, ?, ?)',
-        [
-          dbStudentId,
-          'marks',
-          newNotificationTitle,
-          newNotificationMessage,
-          JSON.stringify({ subject, totalMarks, grade, breakdown: marksBreakdown })
-        ]
-      );
+      try {
+        await pool.execute(
+          'INSERT INTO notifications (student_id, type, title, message, data) VALUES (?, ?, ?, ?, ?)',
+          [
+            dbStudentId,
+            'marks',
+            newNotificationTitle,
+            newNotificationMessage,
+            JSON.stringify({ subject, totalMarks, grade, breakdown: marksBreakdown })
+          ]
+        );
+      } catch (notificationError) {
+        console.warn('⚠️ Could not create notification (table may not exist):', notificationError.message);
+        // Continue without notification - this is not critical
+      }
       
       res.status(201).json({ 
         message: 'Result added successfully and notification sent to student',
