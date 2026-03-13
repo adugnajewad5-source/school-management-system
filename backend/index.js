@@ -87,23 +87,41 @@ pool.getConnection((err, connection) => {
       if (code === 0) {
         console.log('✅ Enhanced submissions migration completed successfully');
         
-        // Run original railway migration after enhanced migration
-        const railwayMigration = spawn('node', ['run-railway-migration.js'], { cwd: __dirname });
-        
-        railwayMigration.stdout.on('data', (data) => {
-          console.log(`[Railway Migration] ${data}`);
+        // Run detailed marks migration
+        const detailedMarksMigration = spawn('node', ['migrate_detailed_marks.js'], { 
+          cwd: __dirname,
+          stdio: 'inherit'
         });
         
-        railwayMigration.stderr.on('data', (data) => {
-          console.error(`[Railway Migration Error] ${data}`);
-        });
-        
-        railwayMigration.on('close', (code) => {
-          if (code === 0) {
-            console.log('✓ All database migrations completed successfully');
+        detailedMarksMigration.on('close', (detailedCode) => {
+          if (detailedCode === 0) {
+            console.log('✅ Detailed marks migration completed successfully');
           } else {
-            console.warn('⚠ Railway migrations completed with warnings');
+            console.warn('⚠️ Detailed marks migration completed with warnings');
           }
+          
+          // Run original railway migration after detailed marks migration
+          const railwayMigration = spawn('node', ['run-railway-migration.js'], { cwd: __dirname });
+          
+          railwayMigration.stdout.on('data', (data) => {
+            console.log(`[Railway Migration] ${data}`);
+          });
+          
+          railwayMigration.stderr.on('data', (data) => {
+            console.error(`[Railway Migration Error] ${data}`);
+          });
+          
+          railwayMigration.on('close', (code) => {
+            if (code === 0) {
+              console.log('✓ All database migrations completed successfully');
+            } else {
+              console.warn('⚠ Railway migrations completed with warnings');
+            }
+          });
+        });
+        
+        detailedMarksMigration.on('error', (err) => {
+          console.error('❌ Detailed marks migration process error:', err);
         });
       } else {
         console.warn('⚠️ Enhanced migrations completed with code:', code);
