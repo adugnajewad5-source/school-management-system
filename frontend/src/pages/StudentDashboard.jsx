@@ -370,7 +370,9 @@ const StudentDashboard = ({ user }) => {
               <button 
                 className="btn-primary" 
                 style={{ padding: '6px 14px', fontSize: '0.8rem' }}
-                onClick={() => window.location.href = '/materials'}
+                onClick={() => {
+                  alert(`📚 Study Material for ${item.subject}\n\nTeacher: ${item.teacher}\nTime: ${item.time}\n\n📖 Available Materials:\n• Lecture Notes PDF\n• Practice Exercises\n• Reference Links\n\n💡 Note: This is a demo. In the full system, materials would be downloaded from the server.`);
+                }}
               >
                 View Material
               </button>
