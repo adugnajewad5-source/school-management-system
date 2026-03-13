@@ -2,7 +2,7 @@
   "name": "school-management-system",
   "version": "1.0.0",
   "scripts": {
-    "build": "cd frontend && npm ci && npm run build",
+    "build": "cd frontend && npm ci && npm run build && cd .. && cp -r frontend/dist/* . && cp frontend/dist/index.html .",
     "start": "cd frontend && npm start"
   },
   "dependencies": {},
