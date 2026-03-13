@@ -113,23 +113,41 @@ pool.getConnection((err, connection) => {
               console.warn('⚠️ Notifications table migration completed with warnings');
             }
             
-            // Run original railway migration after all migrations
-            const railwayMigration = spawn('node', ['run-railway-migration.js'], { cwd: __dirname });
-            
-            railwayMigration.stdout.on('data', (data) => {
-              console.log(`[Railway Migration] ${data}`);
+            // Run materials table migration
+            const materialsMigration = spawn('node', ['migrate_materials_table.js'], { 
+              cwd: __dirname,
+              stdio: 'inherit'
             });
             
-            railwayMigration.stderr.on('data', (data) => {
-              console.error(`[Railway Migration Error] ${data}`);
-            });
-            
-            railwayMigration.on('close', (code) => {
-              if (code === 0) {
-                console.log('✓ All database migrations completed successfully');
+            materialsMigration.on('close', (materialsCode) => {
+              if (materialsCode === 0) {
+                console.log('✅ Materials table migration completed successfully');
               } else {
-                console.warn('⚠ Railway migrations completed with warnings');
+                console.warn('⚠️ Materials table migration completed with warnings');
               }
+              
+              // Run original railway migration after all migrations
+              const railwayMigration = spawn('node', ['run-railway-migration.js'], { cwd: __dirname });
+              
+              railwayMigration.stdout.on('data', (data) => {
+                console.log(`[Railway Migration] ${data}`);
+              });
+              
+              railwayMigration.stderr.on('data', (data) => {
+                console.error(`[Railway Migration Error] ${data}`);
+              });
+              
+              railwayMigration.on('close', (code) => {
+                if (code === 0) {
+                  console.log('✓ All database migrations completed successfully');
+                } else {
+                  console.warn('⚠ Railway migrations completed with warnings');
+                }
+              });
+            });
+            
+            materialsMigration.on('error', (err) => {
+              console.error('❌ Materials migration process error:', err);
             });
           });
           
@@ -162,12 +180,14 @@ const submissionRoutes = require('./routes/submissionRoutes');
 const parentRoutes = require('./routes/parentRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
+const materialRoutes = require('./routes/materialRoutes');
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/submissions', submissionRoutes);
 app.use('/api/parent', parentRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/materials', materialRoutes);
 app.use('/uploads', express.static('uploads'));
 
 // Basic Route
