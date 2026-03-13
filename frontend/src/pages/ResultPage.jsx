@@ -24,12 +24,28 @@ const ResultPage = ({ user }) => {
     try {
       let url;
       const apiUrl = import.meta.env.VITE_API_URL || 'https://school-management-backend-gnav.onrender.com';
+      
+      console.log('🔍 FETCHING RESULTS - User Info:', { 
+        isStudent, 
+        userRole: user?.role, 
+        studentId: user?.studentId,
+        username: user?.username 
+      });
+      
       if (isStudent && user?.studentId) {
-        // Students fetch only their own results
+        // Students fetch only their own results using their Student ID (STU-XXX format)
         url = `${apiUrl}/api/admin/results/student/${user.studentId}`;
+        console.log('📚 Student fetching own results from:', url);
+      } else if (isStudent && !user?.studentId) {
+        // Student logged in but no Student ID - this shouldn't happen
+        console.error('❌ Student user missing studentId:', user);
+        setResults([]);
+        setLoading(false);
+        return;
       } else {
         // Teachers/admins fetch all results
         url = `${apiUrl}/api/admin/results`;
+        console.log('👨‍🏫 Teacher/Admin fetching all results from:', url);
       }
       
       const response = await fetch(url);
@@ -38,6 +54,7 @@ const ResultPage = ({ user }) => {
         setResults([]);
       } else {
         const data = await response.json();
+        console.log('📊 Results received:', data);
         setResults(Array.isArray(data) ? data : []);
       }
     } catch (err) {
@@ -221,6 +238,17 @@ const ResultPage = ({ user }) => {
             <GraduationCap size={64} style={{ opacity: 0.3, marginBottom: '20px' }} />
             <h3>No Results Available</h3>
             <p>Your academic results will appear here once published by your teachers.</p>
+            {user?.studentId && (
+              <p style={{ fontSize: '0.9rem', marginTop: '10px', color: 'var(--primary)' }}>
+                Student ID: {user.studentId}
+              </p>
+            )}
+          </div>
+        ) : displayResults.length === 0 && !isStudent ? (
+          <div style={{ textAlign: 'center', padding: '60px', color: 'var(--text-secondary)' }}>
+            <GraduationCap size={64} style={{ opacity: 0.3, marginBottom: '20px' }} />
+            <h3>No Results Found</h3>
+            <p>No student results have been added yet. Use "Add New Marks" to get started.</p>
           </div>
         ) : (
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>

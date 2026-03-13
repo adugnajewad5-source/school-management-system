@@ -255,6 +255,18 @@ exports.login = async (req, res) => {
     // Success: Reset failed attempts
     await pool.execute('UPDATE users SET failed_attempts = 0, locked_at = NULL WHERE id = ?', [user.id]);
 
+    // For students, get their Student ID (STU-XXX format)
+    let studentId = null;
+    if (user.role === 'student') {
+      const [studentData] = await pool.execute(
+        'SELECT student_id FROM students WHERE user_id = ?',
+        [user.id]
+      );
+      if (studentData.length > 0) {
+        studentId = studentData[0].student_id;
+      }
+    }
+
     // Set token expiration based on role (24 hours for parents, 10 minutes for others)
     const tokenExpiration = user.role === 'parent' ? '24h' : '10m';
 
@@ -263,6 +275,7 @@ exports.login = async (req, res) => {
         id: user.id, 
         role: user.role, 
         username: user.username, 
+        studentId: studentId, // Include Student ID for students
         parent_id: user.role === 'parent' ? user.id : undefined,
         password_changed_at: user.password_changed_at ? new Date(user.password_changed_at).getTime() : null
       },
@@ -276,6 +289,7 @@ exports.login = async (req, res) => {
         id: user.id,
         username: user.username,
         role: user.role,
+        studentId: studentId, // Include Student ID in response for students
         mustChange: user.must_change_password
       }
     });
