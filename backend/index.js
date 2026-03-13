@@ -100,23 +100,41 @@ pool.getConnection((err, connection) => {
             console.warn('⚠️ Detailed marks migration completed with warnings');
           }
           
-          // Run original railway migration after detailed marks migration
-          const railwayMigration = spawn('node', ['run-railway-migration.js'], { cwd: __dirname });
-          
-          railwayMigration.stdout.on('data', (data) => {
-            console.log(`[Railway Migration] ${data}`);
+          // Run notifications table migration
+          const notificationsMigration = spawn('node', ['migrate_notifications_table.js'], { 
+            cwd: __dirname,
+            stdio: 'inherit'
           });
           
-          railwayMigration.stderr.on('data', (data) => {
-            console.error(`[Railway Migration Error] ${data}`);
-          });
-          
-          railwayMigration.on('close', (code) => {
-            if (code === 0) {
-              console.log('✓ All database migrations completed successfully');
+          notificationsMigration.on('close', (notificationsCode) => {
+            if (notificationsCode === 0) {
+              console.log('✅ Notifications table migration completed successfully');
             } else {
-              console.warn('⚠ Railway migrations completed with warnings');
+              console.warn('⚠️ Notifications table migration completed with warnings');
             }
+            
+            // Run original railway migration after all migrations
+            const railwayMigration = spawn('node', ['run-railway-migration.js'], { cwd: __dirname });
+            
+            railwayMigration.stdout.on('data', (data) => {
+              console.log(`[Railway Migration] ${data}`);
+            });
+            
+            railwayMigration.stderr.on('data', (data) => {
+              console.error(`[Railway Migration Error] ${data}`);
+            });
+            
+            railwayMigration.on('close', (code) => {
+              if (code === 0) {
+                console.log('✓ All database migrations completed successfully');
+              } else {
+                console.warn('⚠ Railway migrations completed with warnings');
+              }
+            });
+          });
+          
+          notificationsMigration.on('error', (err) => {
+            console.error('❌ Notifications migration process error:', err);
           });
         });
         
