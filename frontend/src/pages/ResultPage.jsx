@@ -257,14 +257,18 @@ const ResultPage = ({ user }) => {
                 {!isStudent && <th style={{ padding: '16px' }}>Student ID</th>}
                 {!isStudent && <th style={{ padding: '16px' }}>Student</th>}
                 <th style={{ padding: '16px' }}>Subject</th>
-                <th style={{ padding: '16px' }}>Marks / 100</th>
+                <th style={{ padding: '16px' }}>Mid-Exam<br/><small>(30)</small></th>
+                <th style={{ padding: '16px' }}>Assignment<br/><small>(20)</small></th>
+                <th style={{ padding: '16px' }}>Final Exam<br/><small>(50)</small></th>
+                <th style={{ padding: '16px' }}>Total<br/><small>(100)</small></th>
                 <th style={{ padding: '16px' }}>Grade</th>
                 {!isStudent && <th style={{ padding: '16px', textAlign: 'right' }}>Actions</th>}
               </tr>
             </thead>
             <tbody>
               {displayResults.map((res) => {
-                const grade = getGrade(res.marks);
+                const totalMarks = res.total_marks || res.marks || 0;
+                const grade = getGrade(totalMarks);
                 return (
                 <tr key={res.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
                   {!isStudent && (
@@ -283,9 +287,62 @@ const ResultPage = ({ user }) => {
                     </td>
                   )}
                   <td style={{ padding: '16px', color: 'var(--text-secondary)' }}>{res.subject}</td>
-                  <td style={{ padding: '16px', fontWeight: 'bold' }}>{res.marks}</td>
+                  
+                  {/* Detailed Marks Breakdown */}
+                  <td style={{ padding: '16px', textAlign: 'center' }}>
+                    <span style={{ 
+                      background: res.mid_exam_marks ? 'rgba(59, 130, 246, 0.1)' : 'rgba(156, 163, 175, 0.1)',
+                      color: res.mid_exam_marks ? '#3b82f6' : '#9ca3af',
+                      padding: '4px 8px',
+                      borderRadius: '4px',
+                      fontSize: '0.9rem',
+                      fontWeight: '600'
+                    }}>
+                      {res.mid_exam_marks || '-'}/30
+                    </span>
+                  </td>
+                  
+                  <td style={{ padding: '16px', textAlign: 'center' }}>
+                    <span style={{ 
+                      background: res.assignment_marks ? 'rgba(168, 85, 247, 0.1)' : 'rgba(156, 163, 175, 0.1)',
+                      color: res.assignment_marks ? '#a855f7' : '#9ca3af',
+                      padding: '4px 8px',
+                      borderRadius: '4px',
+                      fontSize: '0.9rem',
+                      fontWeight: '600'
+                    }}>
+                      {res.assignment_marks || '-'}/20
+                    </span>
+                  </td>
+                  
+                  <td style={{ padding: '16px', textAlign: 'center' }}>
+                    <span style={{ 
+                      background: res.final_exam_marks ? 'rgba(34, 197, 94, 0.1)' : 'rgba(156, 163, 175, 0.1)',
+                      color: res.final_exam_marks ? '#22c55e' : '#9ca3af',
+                      padding: '4px 8px',
+                      borderRadius: '4px',
+                      fontSize: '0.9rem',
+                      fontWeight: '600'
+                    }}>
+                      {res.final_exam_marks || '-'}/50
+                    </span>
+                  </td>
+                  
+                  <td style={{ padding: '16px', textAlign: 'center' }}>
+                    <span style={{ 
+                      background: totalMarks >= 70 ? 'rgba(34, 197, 94, 0.2)' : totalMarks >= 50 ? 'rgba(251, 191, 36, 0.2)' : 'rgba(239, 68, 68, 0.2)',
+                      color: totalMarks >= 70 ? '#22c55e' : totalMarks >= 50 ? '#f59e0b' : '#ef4444',
+                      padding: '6px 12px',
+                      borderRadius: '6px',
+                      fontSize: '1rem',
+                      fontWeight: 'bold'
+                    }}>
+                      {totalMarks}/100
+                    </span>
+                  </td>
+                  
                   <td style={{ padding: '16px' }}>
-                    <span style={{ color: res.marks >= 70 ? '#22c55e' : '#0ea5e9', fontWeight: '700' }}>{grade}</span>
+                    <span style={{ color: totalMarks >= 70 ? '#22c55e' : '#0ea5e9', fontWeight: '700' }}>{grade}</span>
                   </td>
                   {!isStudent && (
                     <td style={{ padding: '16px', textAlign: 'right' }}>

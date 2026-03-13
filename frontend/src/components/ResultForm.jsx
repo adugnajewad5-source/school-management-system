@@ -6,7 +6,10 @@ const ResultForm = ({ onSubmit, initialData }) => {
     studentId: '',
     student: '',
     subject: 'Mathematics',
-    marks: ''
+    midExamMarks: '',
+    assignmentMarks: '',
+    finalExamMarks: '',
+    totalMarks: ''
   });
   const [studentVerification, setStudentVerification] = useState({
     status: null, // 'valid', 'invalid', 'checking'
@@ -20,7 +23,10 @@ const ResultForm = ({ onSubmit, initialData }) => {
         studentId: initialData.studentId || '',
         student: initialData.student,
         subject: initialData.subject,
-        marks: initialData.marks
+        midExamMarks: initialData.mid_exam_marks || '',
+        assignmentMarks: initialData.assignment_marks || '',
+        finalExamMarks: initialData.final_exam_marks || '',
+        totalMarks: initialData.total_marks || initialData.marks || ''
       });
       setStudentVerification({ status: 'valid', message: 'Student verified' });
     }
@@ -94,6 +100,31 @@ const ResultForm = ({ onSubmit, initialData }) => {
     }
   };
 
+  // Calculate total marks automatically
+  const calculateTotal = (midExam, assignment, finalExam) => {
+    const mid = parseInt(midExam) || 0;
+    const assign = parseInt(assignment) || 0;
+    const final = parseInt(finalExam) || 0;
+    return mid + assign + final;
+  };
+
+  // Handle marks input changes with auto-calculation
+  const handleMarksChange = (field, value) => {
+    const newFormData = { ...formData, [field]: value };
+    
+    if (field === 'midExamMarks' || field === 'assignmentMarks' || field === 'finalExamMarks') {
+      // Auto-calculate total when component marks change
+      const total = calculateTotal(
+        field === 'midExamMarks' ? value : formData.midExamMarks,
+        field === 'assignmentMarks' ? value : formData.assignmentMarks,
+        field === 'finalExamMarks' ? value : formData.finalExamMarks
+      );
+      newFormData.totalMarks = total;
+    }
+    
+    setFormData(newFormData);
+  };
+
   const handleStudentIdChange = (e) => {
     let newStudentId = e.target.value.toUpperCase().trim();
     
@@ -120,24 +151,57 @@ const ResultForm = ({ onSubmit, initialData }) => {
       return;
     }
 
-    // Validate marks
-    const marksValue = parseInt(formData.marks);
-    if (isNaN(marksValue) || marksValue < 0 || marksValue > 100) {
-      alert('Please enter valid marks between 0 and 100.');
+    // Validate marks - at least one component should be entered
+    const midExam = parseInt(formData.midExamMarks) || 0;
+    const assignment = parseInt(formData.assignmentMarks) || 0;
+    const finalExam = parseInt(formData.finalExamMarks) || 0;
+    const total = parseInt(formData.totalMarks) || 0;
+
+    if (midExam === 0 && assignment === 0 && finalExam === 0 && total === 0) {
+      alert('Please enter at least one mark component.');
+      return;
+    }
+
+    // Validate individual components
+    if (midExam > 30) {
+      alert('Mid-exam marks cannot exceed 30 points.');
+      return;
+    }
+    if (assignment > 20) {
+      alert('Assignment marks cannot exceed 20 points.');
+      return;
+    }
+    if (finalExam > 50) {
+      alert('Final exam marks cannot exceed 50 points.');
+      return;
+    }
+    if (total > 100) {
+      alert('Total marks cannot exceed 100 points.');
       return;
     }
 
     onSubmit({
-      studentId: formData.studentId, // Send the STU-XXX format ID
+      studentId: formData.studentId,
       subject: formData.subject,
-      marks: marksValue,
+      midExamMarks: midExam || undefined,
+      assignmentMarks: assignment || undefined,
+      finalExamMarks: finalExam || undefined,
+      marks: total, // For backward compatibility
       studentName: formData.student,
-      studentDatabaseId: studentData?.id // Include the database ID for reference
+      studentDatabaseId: studentData?.id
     });
     
     // Reset form if not editing
     if (!initialData) {
-      setFormData({ studentId: '', student: '', subject: 'Mathematics', marks: '' });
+      setFormData({ 
+        studentId: '', 
+        student: '', 
+        subject: 'Mathematics', 
+        midExamMarks: '',
+        assignmentMarks: '',
+        finalExamMarks: '',
+        totalMarks: ''
+      });
       setStudentVerification({ status: null, message: '' });
       setStudentData(null);
     }
@@ -215,18 +279,99 @@ const ResultForm = ({ onSubmit, initialData }) => {
             <option>Science</option>
           </select>
         </div>
-        <div style={{ marginBottom: '20px' }}>
-          <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem' }}>Marks (0-100)</label>
-          <input
-            type="number"
-            className="input-field"
-            placeholder="85"
-            min="0"
-            max="100"
-            value={formData.marks}
-            onChange={(e) => setFormData({ ...formData, marks: e.target.value })}
-            required
-          />
+
+        {/* Detailed Marks Breakdown */}
+        <div style={{ 
+          marginBottom: '20px', 
+          padding: '20px', 
+          background: 'rgba(59, 130, 246, 0.1)', 
+          borderRadius: '12px',
+          border: '1px solid rgba(59, 130, 246, 0.2)'
+        }}>
+          <h4 style={{ marginBottom: '15px', color: 'var(--primary)', fontSize: '1rem' }}>
+            📊 Marks Breakdown
+          </h4>
+          
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '15px' }}>
+            <div>
+              <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem' }}>
+                Mid-Exam Marks <span style={{ color: '#6b7280' }}>(Max: 30)</span>
+              </label>
+              <input
+                type="number"
+                className="input-field"
+                placeholder="0-30"
+                min="0"
+                max="30"
+                value={formData.midExamMarks}
+                onChange={(e) => handleMarksChange('midExamMarks', e.target.value)}
+              />
+            </div>
+            
+            <div>
+              <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem' }}>
+                Assignment Marks <span style={{ color: '#6b7280' }}>(Max: 20)</span>
+              </label>
+              <input
+                type="number"
+                className="input-field"
+                placeholder="0-20"
+                min="0"
+                max="20"
+                value={formData.assignmentMarks}
+                onChange={(e) => handleMarksChange('assignmentMarks', e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
+            <div>
+              <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem' }}>
+                Final Exam Marks <span style={{ color: '#6b7280' }}>(Max: 50)</span>
+              </label>
+              <input
+                type="number"
+                className="input-field"
+                placeholder="0-50"
+                min="0"
+                max="50"
+                value={formData.finalExamMarks}
+                onChange={(e) => handleMarksChange('finalExamMarks', e.target.value)}
+              />
+            </div>
+            
+            <div>
+              <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem' }}>
+                <strong>Total Marks <span style={{ color: '#6b7280' }}>(Auto-calculated)</span></strong>
+              </label>
+              <input
+                type="number"
+                className="input-field"
+                placeholder="0-100"
+                min="0"
+                max="100"
+                value={formData.totalMarks}
+                readOnly
+                style={{ 
+                  background: 'rgba(34, 197, 94, 0.1)', 
+                  border: '2px solid #22c55e',
+                  fontWeight: 'bold',
+                  color: '#22c55e'
+                }}
+              />
+            </div>
+          </div>
+
+          <div style={{ 
+            marginTop: '15px', 
+            padding: '10px', 
+            background: 'rgba(34, 197, 94, 0.1)', 
+            borderRadius: '8px',
+            fontSize: '0.85rem',
+            color: '#059669'
+          }}>
+            💡 <strong>Grading System:</strong> Mid-Exam (30) + Assignment (20) + Final Exam (50) = Total (100)
+          </div>
         </div>
         <button 
           type="submit" 

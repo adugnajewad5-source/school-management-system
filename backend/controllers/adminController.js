@@ -229,7 +229,8 @@ exports.getReports = async (req, res) => {
 exports.getResults = async (req, res) => {
   try {
     const [results] = await pool.execute(`
-      SELECT r.*, s.student_id, s.name as student_name
+      SELECT r.*, s.student_id, s.name as student_name,
+             r.mid_exam_marks, r.assignment_marks, r.final_exam_marks, r.total_marks, r.marks_breakdown
       FROM results r
       JOIN students s ON r.student_id = s.id
       ORDER BY r.created_at DESC
@@ -260,7 +261,8 @@ exports.getStudentResults = async (req, res) => {
     
     // Get results for this student
     const [results] = await pool.execute(`
-      SELECT r.*, s.student_id, s.name as student_name
+      SELECT r.*, s.student_id, s.name as student_name,
+             r.mid_exam_marks, r.assignment_marks, r.final_exam_marks, r.total_marks, r.marks_breakdown
       FROM results r
       JOIN students s ON r.student_id = s.id
       WHERE r.student_id = ?
@@ -274,21 +276,49 @@ exports.getStudentResults = async (req, res) => {
   }
 };
 
-// Add new result (marks) or update if already exists
+// Add new result (marks) or update if already exists - Enhanced with detailed breakdown
 exports.addResult = async (req, res) => {
-  const { studentId, subject, marks } = req.body;
+  const { studentId, subject, marks, midExamMarks, assignmentMarks, finalExamMarks } = req.body;
   
   try {
     // Validate input
-    if (!studentId || !subject || marks === undefined) {
+    if (!studentId || !subject) {
       return res.status(400).json({ 
-        message: 'Missing required fields: studentId, subject, marks' 
+        message: 'Missing required fields: studentId, subject' 
       });
     }
 
-    if (marks < 0 || marks > 100) {
+    // Validate marks breakdown if provided
+    if (midExamMarks !== undefined && (midExamMarks < 0 || midExamMarks > 30)) {
       return res.status(400).json({ 
-        message: 'Marks must be between 0 and 100' 
+        message: 'Mid-exam marks must be between 0 and 30' 
+      });
+    }
+
+    if (assignmentMarks !== undefined && (assignmentMarks < 0 || assignmentMarks > 20)) {
+      return res.status(400).json({ 
+        message: 'Assignment marks must be between 0 and 20' 
+      });
+    }
+
+    if (finalExamMarks !== undefined && (finalExamMarks < 0 || finalExamMarks > 50)) {
+      return res.status(400).json({ 
+        message: 'Final exam marks must be between 0 and 50' 
+      });
+    }
+
+    // Calculate total marks
+    let totalMarks = marks; // Use provided total if available
+    
+    // If detailed breakdown is provided, calculate total
+    if (midExamMarks !== undefined || assignmentMarks !== undefined || finalExamMarks !== undefined) {
+      totalMarks = (midExamMarks || 0) + (assignmentMarks || 0) + (finalExamMarks || 0);
+    }
+
+    // Validate total marks
+    if (totalMarks !== undefined && (totalMarks < 0 || totalMarks > 100)) {
+      return res.status(400).json({ 
+        message: 'Total marks must be between 0 and 100' 
       });
     }
 
@@ -309,20 +339,37 @@ exports.addResult = async (req, res) => {
     
     // Check if result already exists for this student and subject
     const [existing] = await pool.execute(
-      'SELECT id, marks FROM results WHERE student_id = ? AND subject = ?',
+      'SELECT id, marks, mid_exam_marks, assignment_marks, final_exam_marks, total_marks FROM results WHERE student_id = ? AND subject = ?',
       [dbStudentId, subject]
     );
     
-    const grade = getGrade(marks);
+    const grade = getGrade(totalMarks);
+    
+    // Create marks breakdown object
+    const marksBreakdown = {
+      midExam: midExamMarks || null,
+      assignment: assignmentMarks || null,
+      finalExam: finalExamMarks || null,
+      total: totalMarks
+    };
+    
     const notificationTitle = `Marks Updated: ${subject}`;
-    const notificationMessage = `Your marks for ${subject} have been updated: ${marks}/100 (Grade: ${grade})`;
+    const notificationMessage = `Your marks for ${subject} have been updated: ${totalMarks}/100 (Grade: ${grade})`;
     
     if (existing.length > 0) {
       // Update existing result
-      const oldMarks = existing[0].marks;
+      const oldTotal = existing[0].total_marks || existing[0].marks;
       await pool.execute(
-        'UPDATE results SET marks = ?, updated_at = NOW() WHERE id = ?',
-        [marks, existing[0].id]
+        `UPDATE results SET 
+         marks = ?, 
+         mid_exam_marks = ?, 
+         assignment_marks = ?, 
+         final_exam_marks = ?, 
+         total_marks = ?,
+         marks_breakdown = ?,
+         updated_at = NOW() 
+         WHERE id = ?`,
+        [totalMarks, midExamMarks, assignmentMarks, finalExamMarks, totalMarks, JSON.stringify(marksBreakdown), existing[0].id]
       );
       
       // Send notification about the update
@@ -333,7 +380,7 @@ exports.addResult = async (req, res) => {
           'marks',
           notificationTitle,
           notificationMessage,
-          JSON.stringify({ subject, marks, grade, oldMarks })
+          JSON.stringify({ subject, totalMarks, grade, oldTotal, breakdown: marksBreakdown })
         ]
       );
       
@@ -342,20 +389,22 @@ exports.addResult = async (req, res) => {
         studentName: student.name,
         studentId: studentId,
         subject: subject,
-        marks: marks,
-        previousMarks: oldMarks,
+        totalMarks: totalMarks,
+        breakdown: marksBreakdown,
+        previousTotal: oldTotal,
         action: 'updated'
       });
     } else {
       // Insert new result using the database student ID
       await pool.execute(
-        'INSERT INTO results (student_id, subject, marks) VALUES (?, ?, ?)',
-        [dbStudentId, subject, marks]
+        `INSERT INTO results (student_id, subject, marks, mid_exam_marks, assignment_marks, final_exam_marks, total_marks, marks_breakdown) 
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+        [dbStudentId, subject, totalMarks, midExamMarks, assignmentMarks, finalExamMarks, totalMarks, JSON.stringify(marksBreakdown)]
       );
       
       // Send notification about new marks
       const newNotificationTitle = `New Marks: ${subject}`;
-      const newNotificationMessage = `Your marks for ${subject} have been published: ${marks}/100 (Grade: ${grade})`;
+      const newNotificationMessage = `Your marks for ${subject} have been published: ${totalMarks}/100 (Grade: ${grade})`;
       
       await pool.execute(
         'INSERT INTO notifications (student_id, type, title, message, data) VALUES (?, ?, ?, ?, ?)',
@@ -364,7 +413,7 @@ exports.addResult = async (req, res) => {
           'marks',
           newNotificationTitle,
           newNotificationMessage,
-          JSON.stringify({ subject, marks, grade })
+          JSON.stringify({ subject, totalMarks, grade, breakdown: marksBreakdown })
         ]
       );
       
@@ -373,7 +422,8 @@ exports.addResult = async (req, res) => {
         studentName: student.name,
         studentId: studentId,
         subject: subject,
-        marks: marks,
+        totalMarks: totalMarks,
+        breakdown: marksBreakdown,
         action: 'created'
       });
     }
