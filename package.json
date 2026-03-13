@@ -1,6 +1,10 @@
 {
-  "dependencies": {
-    "bcryptjs": "^3.0.3",
-    "mysql2": "^3.19.0"
-  }
+  "name": "school-management-system",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "cd frontend && npm ci && npm run build",
+    "start": "cd frontend && npm start"
+  },
+  "dependencies": {},
+  "devDependencies": {}
 }
