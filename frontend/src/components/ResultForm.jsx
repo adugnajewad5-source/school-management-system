@@ -38,12 +38,22 @@ const ResultForm = ({ onSubmit, initialData }) => {
     setStudentVerification({ status: 'checking', message: 'Verifying student ID...' });
 
     try {
-      const response = await fetch(`http://${window.location.hostname}:5000/api/admin/students`);
-      const students = await response.json();
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://school-management-backend-gnav.onrender.com';
+      const response = await fetch(`${apiUrl}/api/admin/students`);
       
-      const foundStudent = students.find(s => s.studentId === studentId);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      
+      const students = await response.json();
+      console.log('🔍 Searching for Student ID:', studentId);
+      console.log('📋 Available students:', students.map(s => ({ id: s.student_id, name: s.name })));
+      
+      // Look for student_id field (not studentId)
+      const foundStudent = students.find(s => s.student_id === studentId);
       
       if (foundStudent) {
+        console.log('✅ Student found:', foundStudent);
         setStudentVerification({ 
           status: 'valid', 
           message: `✓ Student found: ${foundStudent.name || foundStudent.username}` 
@@ -54,6 +64,7 @@ const ResultForm = ({ onSubmit, initialData }) => {
         }));
         setStudentData(foundStudent);
       } else {
+        console.log('❌ Student not found for ID:', studentId);
         setStudentVerification({ 
           status: 'invalid', 
           message: '✗ Student ID not found in database' 
@@ -65,7 +76,7 @@ const ResultForm = ({ onSubmit, initialData }) => {
       console.error('Error verifying student:', error);
       setStudentVerification({ 
         status: 'invalid', 
-        message: 'Error verifying student ID' 
+        message: 'Error connecting to server. Please try again.' 
       });
     }
   };

@@ -6,11 +6,15 @@ import {
   Calendar,
   Search,
   BookOpen,
-  Filter
+  Filter,
+  GraduationCap,
+  Plus
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import StudentTable from '../components/StudentTable';
 
 const TeacherDashboard = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('overview');
   const [uploadData, setUploadData] = useState({
     title: '',
@@ -138,27 +142,45 @@ const TeacherDashboard = () => {
           <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Across all sections today</p>
         </div>
 
-        <div className="glass" style={{ padding: '24px', borderLeft: '4px solid var(--secondary)' }}>
+        <div className="glass" style={{ padding: '24px', borderLeft: '4px solid #f59e0b' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
-            <h3 style={{ fontSize: '1rem' }}>Syllabus Coverage</h3>
-            <BookOpen size={20} color="var(--secondary)" />
+            <h3 style={{ fontSize: '1rem' }}>Student Marks</h3>
+            <GraduationCap size={20} color="#f59e0b" />
           </div>
-          <p style={{ fontSize: '1.8rem', fontWeight: 'bold' }}>72%</p>
-          <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Curriculum progress</p>
+          <p style={{ fontSize: '1.8rem', fontWeight: 'bold' }}>Add/Edit</p>
+          <button 
+            onClick={() => navigate('/results')}
+            style={{ 
+              fontSize: '0.8rem', 
+              color: '#f59e0b', 
+              background: 'none', 
+              border: 'none', 
+              cursor: 'pointer',
+              textDecoration: 'underline'
+            }}
+          >
+            Manage Student Results →
+          </button>
         </div>
       </div>
 
       {/* Main Content Area */}
       <div className="glass" style={{ padding: '30px' }}>
         <div style={{ display: 'flex', borderBottom: '1px solid var(--border-color)', marginBottom: '30px', gap: '30px' }}>
-          {['overview', 'assigned-students', 'assignments'].map(tab => (
+          {['overview', 'add-marks', 'assigned-students', 'assignments'].map(tab => (
             <button
               key={tab}
-              onClick={() => setActiveTab(tab)}
+              onClick={() => {
+                if (tab === 'add-marks') {
+                  navigate('/results');
+                } else {
+                  setActiveTab(tab);
+                }
+              }}
               style={{
                 background: 'none',
                 border: 'none',
-                color: activeTab === tab ? 'var(--primary)' : 'var(--text-secondary)',
+                color: tab === 'add-marks' ? '#f59e0b' : activeTab === tab ? 'var(--primary)' : 'var(--text-secondary)',
                 padding: '12px 5px',
                 cursor: 'pointer',
                 fontWeight: activeTab === tab ? 'bold' : 'normal',
@@ -166,7 +188,7 @@ const TeacherDashboard = () => {
                 textTransform: 'capitalize'
               }}
             >
-              {tab.replace('-', ' ')}
+              {tab === 'add-marks' ? '📊 Add Marks' : tab.replace('-', ' ')}
             </button>
           ))}
         </div>
