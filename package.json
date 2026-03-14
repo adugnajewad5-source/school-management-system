@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "vite --host",
     "start": "vite --host",
-    "build": "vite build",
-    "vercel-build": "vite build",
+    "build": "VITE_API_URL=https://school-management-backend-gnav.onrender.com vite build",
+    "vercel-build": "VITE_API_URL=https://school-management-backend-gnav.onrender.com vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
