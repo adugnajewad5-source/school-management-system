@@ -415,3 +415,254 @@ exports.deleteResult = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+// ==================== PARENTS ====================
+
+// Create parent account and link to students
+exports.createParent = async (req, res) => {
+  const { name, email, phone, address, occupation, emergency_contact, student_ids } = req.body;
+
+  try {
+    // Validate required fields
+    if (!name || !email || !student_ids || !Array.isArray(student_ids) || student_ids.length === 0) {
+      return res.status(400).json({
+        message: 'Name, email, and at least one student ID are required'
+      });
+    }
+
+    // Check if email already exists
+    const [existingUser] = await pool.execute('SELECT * FROM users WHERE email = ?', [email]);
+    if (existingUser.length > 0) {
+      return res.status(400).json({ message: 'Email already exists' });
+    }
+
+    // Generate username from name (remove spaces, lowercase)
+    const baseUsername = name.toLowerCase().replace(/\s+/g, '');
+    let username = baseUsername;
+    let counter = 1;
+
+    // Ensure username is unique
+    while (true) {
+      const [existingUsername] = await pool.execute('SELECT * FROM users WHERE username = ?', [username]);
+      if (existingUsername.length === 0) break;
+      username = `${baseUsername}${counter}`;
+      counter++;
+    }
+
+    // Generate temporary password: Par@ + 4 random digits
+    const tempPassword = `Par@${Math.floor(1000 + Math.random() * 9000)}`;
+    const hashedPassword = await bcrypt.hash(tempPassword, 10);
+
+    // Verify all student IDs exist
+    const placeholders = student_ids.map(() => '?').join(',');
+    const [students] = await pool.execute(
+      `SELECT id, student_id, name FROM students WHERE id IN (${placeholders})`,
+      student_ids
+    );
+
+    if (students.length !== student_ids.length) {
+      return res.status(400).json({ message: 'One or more student IDs are invalid' });
+    }
+
+    // Create user account
+    const [userResult] = await pool.execute(
+      'INSERT INTO users (username, email, password_hash, role, must_change_password) VALUES (?, ?, ?, ?, ?)',
+      [username, email, hashedPassword, 'parent', 1]
+    );
+
+    const parentUserId = userResult.insertId;
+
+    // Create parent record
+    await pool.execute(
+      'INSERT INTO parents (user_id, name, phone, address, occupation, emergency_contact) VALUES (?, ?, ?, ?, ?, ?)',
+      [parentUserId, name, phone || null, address || null, occupation || null, emergency_contact || null]
+    );
+
+    // Link parent to students
+    for (const studentId of student_ids) {
+      await pool.execute(
+        'INSERT INTO parent_students (parent_id, student_id, relationship) VALUES (?, ?, ?)',
+        [parentUserId, studentId, 'parent']
+      );
+    }
+
+    res.status(201).json({
+      message: 'Parent account created successfully',
+      parent: {
+        id: parentUserId,
+        username,
+        name,
+        email,
+        tempPassword,
+        linkedStudents: students.map(s => ({
+          id: s.id,
+          student_id: s.student_id,
+          name: s.name
+        }))
+      }
+    });
+
+  } catch (err) {
+    console.error('Create parent error:', err);
+    res.status(500).json({ message: `Server error: ${err.message}` });
+  }
+};
+
+// Get all parents with their linked students
+exports.getParents = async (req, res) => {
+  try {
+    const [parents] = await pool.execute(`
+      SELECT
+        u.id as user_id,
+        u.username,
+        u.email,
+        u.created_at,
+        p.name,
+        p.phone,
+        p.address,
+        p.occupation,
+        p.emergency_contact
+      FROM users u
+      JOIN parents p ON u.id = p.user_id
+      WHERE u.role = 'parent'
+      ORDER BY p.name ASC
+    `);
+
+    // Get linked students for each parent
+    const parentsWithStudents = await Promise.all(
+      parents.map(async (parent) => {
+        const [students] = await pool.execute(`
+          SELECT
+            s.id,
+            s.student_id,
+            s.name,
+            s.class,
+            ps.relationship
+          FROM parent_students ps
+          JOIN students s ON ps.student_id = s.id
+          WHERE ps.parent_id = ?
+          ORDER BY s.name ASC
+        `, [parent.user_id]);
+
+        return {
+          ...parent,
+          students: students
+        };
+      })
+    );
+
+    res.json(parentsWithStudents);
+  } catch (err) {
+    console.error('Get parents error:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// Link additional student to parent
+exports.linkStudentToParent = async (req, res) => {
+  const { parent_id, student_id, relationship = 'parent' } = req.body;
+
+  try {
+    // Check if parent exists
+    const [parent] = await pool.execute('SELECT * FROM users WHERE id = ? AND role = ?', [parent_id, 'parent']);
+    if (parent.length === 0) {
+      return res.status(404).json({ message: 'Parent not found' });
+    }
+
+    // Check if student exists
+    const [student] = await pool.execute('SELECT * FROM students WHERE id = ?', [student_id]);
+    if (student.length === 0) {
+      return res.status(404).json({ message: 'Student not found' });
+    }
+
+    // Check if link already exists
+    const [existingLink] = await pool.execute(
+      'SELECT * FROM parent_students WHERE parent_id = ? AND student_id = ?',
+      [parent_id, student_id]
+    );
+
+    if (existingLink.length > 0) {
+      return res.status(400).json({ message: 'Parent is already linked to this student' });
+    }
+
+    // Create the link
+    await pool.execute(
+      'INSERT INTO parent_students (parent_id, student_id, relationship) VALUES (?, ?, ?)',
+      [parent_id, student_id, relationship]
+    );
+
+    res.json({
+      message: 'Student linked to parent successfully',
+      link: {
+        parent_id,
+        student_id,
+        relationship
+      }
+    });
+
+  } catch (err) {
+    console.error('Link student to parent error:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// Remove student link from parent
+exports.unlinkStudentFromParent = async (req, res) => {
+  const { parent_id, student_id } = req.params;
+
+  try {
+    const [result] = await pool.execute(
+      'DELETE FROM parent_students WHERE parent_id = ? AND student_id = ?',
+      [parent_id, student_id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Parent-student link not found' });
+    }
+
+    res.json({ message: 'Student unlinked from parent successfully' });
+
+  } catch (err) {
+    console.error('Unlink student from parent error:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// Update parent information
+exports.updateParent = async (req, res) => {
+  const { id } = req.params;
+  const { name, phone, address, occupation, emergency_contact } = req.body;
+
+  try {
+    await pool.execute(
+      'UPDATE parents SET name = ?, phone = ?, address = ?, occupation = ?, emergency_contact = ? WHERE user_id = ?',
+      [name, phone || null, address || null, occupation || null, emergency_contact || null, id]
+    );
+
+    res.json({ message: 'Parent information updated successfully' });
+
+  } catch (err) {
+    console.error('Update parent error:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// Delete parent account
+exports.deleteParent = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Delete user (CASCADE will handle parent_students and parents table)
+    const [result] = await pool.execute('DELETE FROM users WHERE id = ? AND role = ?', [id, 'parent']);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Parent not found' });
+    }
+
+    res.json({ message: 'Parent account deleted successfully' });
+
+  } catch (err) {
+    console.error('Delete parent error:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+};

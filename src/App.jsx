@@ -15,6 +15,7 @@ import ReportsPage from './pages/ReportsPage';
 import ChangePassword from './pages/ChangePassword';
 import StudentTable from './components/StudentTable';
 import TeacherTable from './components/TeacherTable';
+import ParentTable from './components/ParentTable';
 import PreRegisterStudent from './components/PreRegisterStudent';
 import AccessDenied from './pages/AccessDenied';
 import SettingsPage from './pages/SettingsPage';
@@ -174,6 +175,9 @@ function App() {
             } />
             <Route path="/teachers" element={
               <ProtectedRoute user={user} allowedRoles={['admin']}><TeacherTable /></ProtectedRoute>
+            } />
+            <Route path="/parents" element={
+              <ProtectedRoute user={user} allowedRoles={['admin']}><ParentTable /></ProtectedRoute>
             } />
             <Route path="/settings" element={
               <ProtectedRoute user={user} allowedRoles={['admin']}><SettingsPage /></ProtectedRoute>

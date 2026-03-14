@@ -7,7 +7,8 @@ import {
   BarChart3,
   UserPlus,
   Settings,
-  ShieldCheck
+  ShieldCheck,
+  UserCheck
 } from 'lucide-react';
 
 const DashboardMenuCard = ({ title, description, icon: Icon, color, path }) => {
@@ -88,6 +89,13 @@ const DirectorDashboard = () => {
           icon={UserSquare2}
           color="#0ea5e9"
           path="/teachers"
+        />
+        <DashboardMenuCard
+          title="Manage Parents"
+          description="Manage parent accounts and link them to their children."
+          icon={UserCheck}
+          color="#ec4899"
+          path="/parents"
         />
         <DashboardMenuCard
           title="Financial Payments"

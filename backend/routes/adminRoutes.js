@@ -17,6 +17,14 @@ router.get('/teachers', adminController.getTeachers);
 router.put('/teachers/:id', adminController.updateTeacher);
 router.delete('/teachers/:user_id', adminController.deleteUser);
 
+// --- Parents Management ---
+router.post('/parents', adminController.createParent);
+router.get('/parents', adminController.getParents);
+router.put('/parents/:id', adminController.updateParent);
+router.delete('/parents/:id', adminController.deleteParent);
+router.post('/parents/link-student', adminController.linkStudentToParent);
+router.delete('/parents/:parent_id/students/:student_id', adminController.unlinkStudentFromParent);
+
 // --- Payments Management ---
 router.get('/payments', adminController.getPayments);
 router.post('/payments', adminController.addPayment);

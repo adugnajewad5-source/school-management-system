@@ -1,49 +1,29 @@
 const express = require('express');
 const router = express.Router();
 const parentController = require('../controllers/parentController');
-const parentAuthMiddleware = require('../middleware/parentAuthMiddleware');
-const parentStudentMiddleware = require('../middleware/parentStudentMiddleware');
+const { authenticateToken } = require('../middleware/authMiddleware');
+const { parentAuthMiddleware } = require('../middleware/parentAuthMiddleware');
+const { parentStudentMiddleware } = require('../middleware/parentStudentMiddleware');
 
-/**
- * Parent API Routes
- * All routes require parentAuthMiddleware for JWT verification
- * Child-specific routes also require parentStudentMiddleware for authorization
- */
+// Apply authentication middleware to all parent routes
+router.use(authenticateToken);
+router.use(parentAuthMiddleware);
 
-// Get all children for logged-in parent
-// GET /api/parent/children
-router.get('/children', parentAuthMiddleware, parentController.getChildren);
+// --- Parent Dashboard ---
+// Get all children associated with the parent
+router.get('/children', parentController.getChildren);
 
-// Get child profile information
-// GET /api/parent/child/:studentId/profile
-router.get('/child/:studentId/profile', 
-  parentAuthMiddleware, 
-  parentStudentMiddleware, 
-  parentController.getChildProfile
-);
+// --- Child-Specific Routes (Protected by parent-student relationship) ---
+// Get child's profile information
+router.get('/child/:studentId/profile', parentStudentMiddleware, parentController.getChildProfile);
 
 // Get child's academic results
-// GET /api/parent/child/:studentId/results
-router.get('/child/:studentId/results', 
-  parentAuthMiddleware, 
-  parentStudentMiddleware, 
-  parentController.getChildResults
-);
+router.get('/child/:studentId/results', parentStudentMiddleware, parentController.getChildResults);
 
 // Get child's attendance records
-// GET /api/parent/child/:studentId/attendance
-router.get('/child/:studentId/attendance', 
-  parentAuthMiddleware, 
-  parentStudentMiddleware, 
-  parentController.getChildAttendance
-);
+router.get('/child/:studentId/attendance', parentStudentMiddleware, parentController.getChildAttendance);
 
 // Get child's payment history
-// GET /api/parent/child/:studentId/payments
-router.get('/child/:studentId/payments', 
-  parentAuthMiddleware, 
-  parentStudentMiddleware, 
-  parentController.getChildPayments
-);
+router.get('/child/:studentId/payments', parentStudentMiddleware, parentController.getChildPayments);
 
 module.exports = router;

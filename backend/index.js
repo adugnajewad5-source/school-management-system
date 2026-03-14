@@ -126,23 +126,41 @@ pool.getConnection((err, connection) => {
                 console.warn('⚠️ Materials table migration completed with warnings');
               }
               
-              // Run original railway migration after all migrations
-              const railwayMigration = spawn('node', ['run-railway-migration.js'], { cwd: __dirname });
-              
-              railwayMigration.stdout.on('data', (data) => {
-                console.log(`[Railway Migration] ${data}`);
+              // Run parent tables migration
+              const parentMigration = spawn('node', ['migrate_parent_student_relationship.js'], { 
+                cwd: __dirname,
+                stdio: 'inherit'
               });
               
-              railwayMigration.stderr.on('data', (data) => {
-                console.error(`[Railway Migration Error] ${data}`);
-              });
-              
-              railwayMigration.on('close', (code) => {
-                if (code === 0) {
-                  console.log('✓ All database migrations completed successfully');
+              parentMigration.on('close', (parentCode) => {
+                if (parentCode === 0) {
+                  console.log('✅ Parent tables migration completed successfully');
                 } else {
-                  console.warn('⚠ Railway migrations completed with warnings');
+                  console.warn('⚠️ Parent tables migration completed with warnings');
                 }
+                
+                // Run original railway migration after all migrations
+                const railwayMigration = spawn('node', ['run-railway-migration.js'], { cwd: __dirname });
+                
+                railwayMigration.stdout.on('data', (data) => {
+                  console.log(`[Railway Migration] ${data}`);
+                });
+                
+                railwayMigration.stderr.on('data', (data) => {
+                  console.error(`[Railway Migration Error] ${data}`);
+                });
+                
+                railwayMigration.on('close', (code) => {
+                  if (code === 0) {
+                    console.log('✓ All database migrations completed successfully');
+                  } else {
+                    console.warn('⚠ Railway migrations completed with warnings');
+                  }
+                });
+              });
+              
+              parentMigration.on('error', (err) => {
+                console.error('❌ Parent migration process error:', err);
               });
             });
             
