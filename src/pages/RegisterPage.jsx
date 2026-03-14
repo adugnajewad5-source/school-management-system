@@ -90,7 +90,7 @@ const RegisterPage = () => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      background: 'url("https://images.unsplash.com/photo-1580582932707-520aed937b7b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2132&q=80") center/cover no-repeat',
+      background: 'url("https://images.unsplash.com/photo-1580582932707-520aed937b7b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2132&q=80&v=2026") center/cover no-repeat',
       padding: '20px',
       margin: 0,
       boxSizing: 'border-box'

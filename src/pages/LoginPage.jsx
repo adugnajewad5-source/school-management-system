@@ -76,7 +76,7 @@ const LoginPage = ({ onLogin }) => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      background: 'url("https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=2126&q=80") center/cover no-repeat',
+      background: 'url("https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=2126&q=80&v=2026") center/cover no-repeat',
       backgroundAttachment: 'fixed',
       padding: '20px',
       margin: 0,
@@ -88,8 +88,8 @@ const LoginPage = ({ onLogin }) => {
         maxWidth: '400px',
         textAlign: 'center'
       }}>
-        <h2 style={{ marginBottom: '10px', fontSize: '2rem', fontWeight: '700' }}>Welcome Back</h2>
-        <p style={{ color: 'rgba(255, 255, 255, 0.8)', marginBottom: '30px', fontSize: '1.1rem' }}>🏫 School Management System</p>
+        <h2 style={{ marginBottom: '10px', fontSize: '2rem', fontWeight: '700' }}>🏫 Welcome Back</h2>
+        <p style={{ color: 'rgba(255, 255, 255, 0.8)', marginBottom: '30px', fontSize: '1.1rem' }}>School Management System - Beautiful Campus</p>
 
         <form onSubmit={handleLogin}>
           {error && <div className="error-message" style={{ marginBottom: '15px', fontSize: '0.9rem' }}>{error}</div>}
