@@ -208,9 +208,9 @@ app.use('/api/upload', uploadRoutes);
 app.use('/api/materials', materialRoutes);
 app.use('/uploads', express.static('uploads'));
 
-// Basic Route
+// Basic Route - Parent Management System Ready
 app.get('/', (req, res) => {
-  res.send('School Management System API');
+  res.send('School Management System API - Parent Management Ready');
 });
 
 const PORT = process.env.PORT || 5000;
