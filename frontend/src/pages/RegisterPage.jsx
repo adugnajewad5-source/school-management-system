@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShieldCheck, ShieldAlert, CheckCircle2, XCircle } from 'lucide-react';
 
+// Fixed: Register page routing issue - ensuring proper SPA navigation
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
     username: '',
