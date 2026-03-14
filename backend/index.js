@@ -54,137 +54,15 @@ if (dbHost && dbHost.includes('aws.connect.psdb.cloud')) {
 // Use connection pool instead of single connection
 const pool = mysql.createPool(dbConfig);
 
-// Test the connection and run migrations
+// Test the connection
 pool.getConnection((err, connection) => {
   if (err) {
     console.error('Error connecting to MySQL:', err);
-    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-      console.error('Database connection was closed.');
-    }
-    if (err.code === 'ER_CON_COUNT_ERROR') {
-      console.error('Database has too many connections.');
-    }
-    if (err.code === 'ER_AUTHENTICATION_PLUGIN_ERROR') {
-      console.error('Database authentication failed.');
-    }
     return;
   }
   if (connection) {
     connection.release();
-    console.log('Connected to MySQL database');
-    
-    // Run enhanced migrations on startup
-    console.log('🔧 Running enhanced startup migrations...');
-    const { spawn } = require('child_process');
-    
-    // Run enhanced submissions migration
-    const enhancedMigration = spawn('node', ['enhanced_submissions_migration.js'], { 
-      cwd: __dirname,
-      stdio: 'inherit'
-    });
-    
-    enhancedMigration.on('close', (code) => {
-      if (code === 0) {
-        console.log('✅ Enhanced submissions migration completed successfully');
-        
-        // Run detailed marks migration
-        const detailedMarksMigration = spawn('node', ['migrate_detailed_marks.js'], { 
-          cwd: __dirname,
-          stdio: 'inherit'
-        });
-        
-        detailedMarksMigration.on('close', (detailedCode) => {
-          if (detailedCode === 0) {
-            console.log('✅ Detailed marks migration completed successfully');
-          } else {
-            console.warn('⚠️ Detailed marks migration completed with warnings');
-          }
-          
-          // Run notifications table migration
-          const notificationsMigration = spawn('node', ['migrate_notifications_table.js'], { 
-            cwd: __dirname,
-            stdio: 'inherit'
-          });
-          
-          notificationsMigration.on('close', (notificationsCode) => {
-            if (notificationsCode === 0) {
-              console.log('✅ Notifications table migration completed successfully');
-            } else {
-              console.warn('⚠️ Notifications table migration completed with warnings');
-            }
-            
-            // Run materials table migration
-            const materialsMigration = spawn('node', ['migrate_materials_table.js'], { 
-              cwd: __dirname,
-              stdio: 'inherit'
-            });
-            
-            materialsMigration.on('close', (materialsCode) => {
-              if (materialsCode === 0) {
-                console.log('✅ Materials table migration completed successfully');
-              } else {
-                console.warn('⚠️ Materials table migration completed with warnings');
-              }
-              
-              // Run parent tables migration
-              const parentMigration = spawn('node', ['migrate_parent_student_relationship.js'], { 
-                cwd: __dirname,
-                stdio: 'inherit'
-              });
-              
-              parentMigration.on('close', (parentCode) => {
-                if (parentCode === 0) {
-                  console.log('✅ Parent tables migration completed successfully');
-                } else {
-                  console.warn('⚠️ Parent tables migration completed with warnings');
-                }
-                
-                // Run original railway migration after all migrations
-                const railwayMigration = spawn('node', ['run-railway-migration.js'], { cwd: __dirname });
-                
-                railwayMigration.stdout.on('data', (data) => {
-                  console.log(`[Railway Migration] ${data}`);
-                });
-                
-                railwayMigration.stderr.on('data', (data) => {
-                  console.error(`[Railway Migration Error] ${data}`);
-                });
-                
-                railwayMigration.on('close', (code) => {
-                  if (code === 0) {
-                    console.log('✓ All database migrations completed successfully');
-                  } else {
-                    console.warn('⚠ Railway migrations completed with warnings');
-                  }
-                });
-              });
-              
-              parentMigration.on('error', (err) => {
-                console.error('❌ Parent migration process error:', err);
-              });
-            });
-            
-            materialsMigration.on('error', (err) => {
-              console.error('❌ Materials migration process error:', err);
-            });
-          });
-          
-          notificationsMigration.on('error', (err) => {
-            console.error('❌ Notifications migration process error:', err);
-          });
-        });
-        
-        detailedMarksMigration.on('error', (err) => {
-          console.error('❌ Detailed marks migration process error:', err);
-        });
-      } else {
-        console.warn('⚠️ Enhanced migrations completed with code:', code);
-      }
-    });
-    
-    enhancedMigration.on('error', (err) => {
-      console.error('❌ Enhanced migration process error:', err);
-    });
+    console.log('✅ Connected to MySQL database');
   }
 });
 
@@ -208,9 +86,9 @@ app.use('/api/upload', uploadRoutes);
 app.use('/api/materials', materialRoutes);
 app.use('/uploads', express.static('uploads'));
 
-// Basic Route - Parent Management System Ready
+// Basic Route - Beautiful School Building Backgrounds Ready
 app.get('/', (req, res) => {
-  res.send('School Management System API - Parent Management Ready');
+  res.send('School Management System API - Beautiful School Building Backgrounds Ready');
 });
 
 const PORT = process.env.PORT || 5000;
