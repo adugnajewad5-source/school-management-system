@@ -120,10 +120,12 @@ function App() {
 
         <main style={{
           marginLeft: user ? '300px' : '0',
-          width: '100%',
+          width: user ? 'calc(100% - 300px)' : '100%',
           padding: user ? '40px' : '0',
           minHeight: '100vh',
-          transition: 'margin 0.3s'
+          transition: 'all 0.3s ease',
+          display: 'flex',
+          flexDirection: 'column'
         }}>
           <Routes>
             {/* Public Routes */}

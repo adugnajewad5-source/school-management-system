@@ -255,11 +255,24 @@ body.light-mode ::-webkit-scrollbar-thumb:hover {
   font-family: 'Outfit', sans-serif;
 }
 
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+}
+
 body {
   background: radial-gradient(circle at top right, #1e1b4b, #0f172a);
   color: var(--text-primary);
   min-height: 100vh;
-  overflow-x: hidden;
   position: relative;
 }
 
@@ -339,6 +352,28 @@ body {
   --border-color: #404040;
   --card-shadow: rgba(255, 215, 0, 0.2);
   --primary-color: #FFD700;
+}
+
+/* Ensure perfect centering for login/register pages */
+.app-container {
+  width: 100vw;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.app-container main {
+  position: relative;
+}
+
+/* Center content when no sidebar is present */
+.app-container main:not([style*="marginLeft: 300px"]) {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 100vw !important;
+  margin: 0 !important;
+  padding: 20px !important;
+  box-sizing: border-box;
 }
 
 /* Responsive Design - Same Size on Phone and PC */

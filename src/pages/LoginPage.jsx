@@ -71,13 +71,16 @@ const LoginPage = ({ onLogin }) => {
 
   return (
     <div style={{
+      width: '100vw',
       minHeight: '100vh',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       background: 'url("https://images.unsplash.com/photo-1523050853063-8802a83557e9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80") center/cover no-repeat',
       backgroundAttachment: 'fixed',
-      padding: '20px'
+      padding: '20px',
+      margin: 0,
+      boxSizing: 'border-box'
     }}>
       <div className="glass" style={{
         padding: '40px',

@@ -85,12 +85,15 @@ const RegisterPage = () => {
 
   return (
     <div style={{
+      width: '100vw',
       minHeight: '100vh',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       background: 'url("https://images.unsplash.com/photo-1546410531-bb4caa6b424d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80") center/cover no-repeat',
-      padding: '20px'
+      padding: '20px',
+      margin: 0,
+      boxSizing: 'border-box'
     }}>
       <div className="glass" style={{
         padding: '30px',
