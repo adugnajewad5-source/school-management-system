@@ -18,13 +18,23 @@ body {
   max-width: 100%;
 }
 
-/* Keep desktop layout on all devices */
-main {
+/* Keep desktop layout on all devices - but only when sidebar is present */
+main:not(.no-sidebar) {
   margin-left: 300px !important;
   padding: 40px !important;
   min-height: 100vh;
   width: calc(100% - 300px) !important;
   overflow-x: auto;
+}
+
+/* Login/Register pages without sidebar */
+main.no-sidebar {
+  margin-left: 0 !important;
+  padding: 20px !important;
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 .app-container {

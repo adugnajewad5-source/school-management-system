@@ -118,7 +118,7 @@ function App() {
       <div className="app-container" style={{ display: 'flex' }}>
         {user && <Sidebar role={user.role} onLogout={handleLogout} />}
 
-        <main style={{
+        <main className={user ? '' : 'no-sidebar'} style={{
           marginLeft: user ? '300px' : '0',
           width: user ? 'calc(100% - 300px)' : '100%',
           padding: user ? '40px' : '0',
