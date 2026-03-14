@@ -76,23 +76,23 @@ const LoginPage = ({ onLogin }) => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      background: 'url("https://images.unsplash.com/photo-1523050853063-8802a83557e9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80") center/cover no-repeat',
+      background: 'url("https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=2126&q=80") center/cover no-repeat',
       backgroundAttachment: 'fixed',
       padding: '20px',
       margin: 0,
       boxSizing: 'border-box'
     }}>
-      <div className="glass" style={{
+      <div className="glass login-form-container" style={{
         padding: '40px',
         width: '100%',
         maxWidth: '400px',
         textAlign: 'center'
       }}>
-        <h2 style={{ marginBottom: '10px' }}>Welcome Back</h2>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: '30px' }}>School Management System</p>
+        <h2 style={{ marginBottom: '10px', fontSize: '2rem', fontWeight: '700' }}>Welcome Back</h2>
+        <p style={{ color: 'rgba(255, 255, 255, 0.8)', marginBottom: '30px', fontSize: '1.1rem' }}>🏫 School Management System</p>
 
         <form onSubmit={handleLogin}>
-          {error && <div style={{ marginBottom: '15px', color: '#f43f5e', fontSize: '0.9rem', background: 'rgba(244, 63, 94, 0.1)', padding: '10px', borderRadius: '8px' }}>{error}</div>}
+          {error && <div className="error-message" style={{ marginBottom: '15px', fontSize: '0.9rem' }}>{error}</div>}
           <div style={{ marginBottom: '20px', textAlign: 'left' }}>
             <label style={{ display: 'block', marginBottom: '8px', fontSize: '0.9rem' }}>Username</label>
             <input

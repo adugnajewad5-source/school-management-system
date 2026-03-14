@@ -90,22 +90,22 @@ const RegisterPage = () => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      background: 'url("https://images.unsplash.com/photo-1546410531-bb4caa6b424d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80") center/cover no-repeat',
+      background: 'url("https://images.unsplash.com/photo-1580582932707-520aed937b7b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2132&q=80") center/cover no-repeat',
       padding: '20px',
       margin: 0,
       boxSizing: 'border-box'
     }}>
-      <div className="glass" style={{
+      <div className="glass login-form-container" style={{
         padding: '30px',
         width: '100%',
         maxWidth: '550px',
         textAlign: 'center'
       }}>
-        <h2 style={{ marginBottom: '5px' }}>Create Account</h2>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: '25px', fontSize: '0.9rem' }}>Join our secure academic community</p>
+        <h2 style={{ marginBottom: '5px', fontSize: '2rem', fontWeight: '700' }}>Create Account</h2>
+        <p style={{ color: 'rgba(255, 255, 255, 0.8)', marginBottom: '25px', fontSize: '1rem' }}>🎓 Join our secure academic community</p>
 
-        {error && <div style={{ marginBottom: '15px', color: '#f43f5e', fontSize: '0.9rem', background: 'rgba(244, 63, 94, 0.1)', padding: '10px', borderRadius: '8px' }}>{error}</div>}
-        {success && <div style={{ marginBottom: '15px', color: '#22c55e', fontSize: '0.9rem', background: 'rgba(34, 197, 94, 0.1)', padding: '10px', borderRadius: '8px' }}>{success}</div>}
+        {error && <div className="error-message" style={{ marginBottom: '15px', fontSize: '0.9rem' }}>{error}</div>}
+        {success && <div className="success-message" style={{ marginBottom: '15px', fontSize: '0.9rem' }}>{success}</div>}
 
         <form onSubmit={handleRegister}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', textAlign: 'left' }}>
